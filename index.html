@@ -448,6 +448,10 @@
                                 </div>
                                 <div class="text-xs text-slate-400">Сумма баллов: <span id="totalPoints" class="text-sky-200 font-semibold">0.00</span></div>
                             </div>
+                            <div class="mb-5">
+                                <label for="frontNotes" class="block text-xs font-semibold text-slate-400 mb-1.5">Заметки</label>
+                                <textarea id="frontNotes" rows="3" class="w-full resize-y rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-400"></textarea>
+                            </div>
 
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -499,6 +503,10 @@
                                     <span id="profileFinalScore" class="gradient-text">0.00</span>
                                 </div>
                                 <div class="text-xs text-slate-400">Сумма баллов: <span id="profileTotalPoints" class="text-red-300 font-semibold">0.00</span></div>
+                            </div>
+                            <div class="mb-5">
+                                <label for="profileNotes" class="block text-xs font-semibold text-slate-400 mb-1.5">Заметки</label>
+                                <textarea id="profileNotes" rows="3" class="w-full resize-y rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-red-400"></textarea>
                             </div>
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetProfileValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -2167,6 +2175,7 @@
 
         const selectedTiers = {};
         pdfParameters.forEach(p => selectedTiers[p.id] = 0);
+        [4, 9, 15].forEach(parameterId => selectedTiers[parameterId] = null);
 
         let activeCategory = 'all';
         let searchQuery = '';
@@ -2497,6 +2506,40 @@
             })[character]);
         }
 
+        function parseMeasurementValue(rawValue) {
+            const value = String(rawValue ?? '').trim().replace(',', '.');
+            if (!value) return null;
+            const parsed = Number(value);
+            return Number.isFinite(parsed) ? parsed : null;
+        }
+
+        function truncateToTwoDecimals(value) {
+            const raw = String(value ?? '').trim().replace(',', '.');
+            const match = raw.match(/^(-?)(\d+)\.?(\d*)/);
+            if (!match) return raw;
+            return `${match[1]}${match[2]}.${(match[3] + '00').slice(0, 2)}`;
+        }
+
+        function isRequiredMeasurement(type, parameterId) {
+            return type === 'front' && (parameterId === 4 || parameterId === 9);
+        }
+
+        function updateIaaJfaDifference() {
+            const iaa = parseMeasurementValue(measurementInputs.front[4]);
+            const jfa = parseMeasurementValue(measurementInputs.front[9]);
+            const differenceParameter = pdfParameters.find(parameter => parameter.id === 15);
+
+            if (iaa === null || jfa === null || !differenceParameter) {
+                delete measurementInputs.front[15];
+                selectedTiers[15] = null;
+                return;
+            }
+
+            const difference = Math.abs(iaa - jfa);
+            measurementInputs.front[15] = truncateToTwoDecimals(difference);
+            selectedTiers[15] = findMeasurementTier(differenceParameter, 'front', difference);
+        }
+
         function renderMeasurementEstimator(type, parameter, labels) {
             if (!supportsNumericMeasurement(parameter, labels)) {
                 return `
@@ -2505,8 +2548,21 @@
                     </p>`;
             }
 
+            if (type === 'front' && parameter.id === 15) {
+                const difference = measurementInputs.front[15];
+                return `
+                    <div class="mt-4 border-t border-slate-800/80 pt-4">
+                        <p class="text-xs font-semibold text-slate-400">Разница IAA и JFA</p>
+                        <output id="front-measurement-result-15" class="mt-1 block text-sm text-slate-200" aria-live="polite">
+                            ${difference === undefined ? 'Введи значения IAA и JFA для автоподсчёта' : `${escapeAttribute(truncateToTwoDecimals(difference))}°`}
+                        </output>
+                        <p class="mt-1 text-[10px] text-slate-500">Автоматически рассчитывается как |IAA − JFA| и выбирает тир.</p>
+                    </div>`;
+            }
+
             const rawValue = measurementInputs[type][parameter.id] || '';
             const tierIndex = findMeasurementTier(parameter, type, rawValue);
+            const required = isRequiredMeasurement(type, parameter.id);
             const inputId = `${type}-measurement-${parameter.id}`;
             const resultId = `${type}-measurement-result-${parameter.id}`;
             const buttonId = `${type}-measurement-apply-${parameter.id}`;
@@ -2525,12 +2581,12 @@
             return `
                 <div class="mt-4 border-t border-slate-800/80 pt-4 flex flex-col sm:flex-row sm:items-end sm:justify-end gap-3">
                     <div class="w-full sm:max-w-48">
-                        <label for="${inputId}" class="block text-xs font-semibold text-slate-400 mb-1.5">Ввести значение</label>
+                        <label for="${inputId}" class="block text-xs font-semibold text-slate-400 mb-1.5">Ввести значение${required ? ' (обязательно)' : ''}</label>
                         <input id="${inputId}" type="text" inputmode="decimal" autocomplete="off"
-                            value="${escapeAttribute(rawValue)}" placeholder="Например, 0,85" aria-describedby="${resultId}"
+                            value="${escapeAttribute(rawValue)}" placeholder="Например, 0,85" aria-describedby="${resultId}" ${required ? 'required aria-required="true"' : ''}
                             oninput="updateMeasurementValue('${type}', ${parameter.id}, this.value)"
                             class="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none ${inputFocusClass}">
-                        <span class="mt-1 block text-[10px] text-slate-500">В единицах, указанных в шкале выше</span>
+                        <span class="mt-1 block text-[10px] text-slate-500">${required ? 'Обязательно введи число, чтобы применить тир.' : 'В единицах, указанных в шкале выше'}</span>
                     </div>
                     <div class="flex flex-col sm:items-end gap-2">
                         <p id="${resultId}" class="text-xs text-slate-300" role="status" aria-live="polite">${resultText}</p>
@@ -2551,6 +2607,19 @@
             const parameter = parameters.find(item => item.id === parameterId);
             if (!parameter) return;
 
+            if (isRequiredMeasurement(type, parameterId)) {
+                const inputId = `${type}-measurement-${parameterId}`;
+                const currentInput = document.getElementById(inputId);
+                const selectionStart = currentInput?.selectionStart ?? String(value).length;
+                const selectionEnd = currentInput?.selectionEnd ?? selectionStart;
+                updateIaaJfaDifference();
+                render();
+                const updatedInput = document.getElementById(inputId);
+                updatedInput?.focus();
+                updatedInput?.setSelectionRange(selectionStart, selectionEnd);
+                return;
+            }
+
             const tierIndex = findMeasurementTier(parameter, type, value);
             const result = document.getElementById(`${type}-measurement-result-${parameterId}`);
             const button = document.getElementById(`${type}-measurement-apply-${parameterId}`);
@@ -2567,6 +2636,11 @@
 
         window.applyMeasurementTier = function(type, parameterId) {
             if (type !== 'front' && type !== 'profile') return;
+            if (isRequiredMeasurement(type, parameterId)
+                && parseMeasurementValue(measurementInputs[type][parameterId]) === null) {
+                showToast("Сначала введи обязательное значение.");
+                return;
+            }
             const parameters = type === 'front' ? pdfParameters : profileParameters;
             const parameter = parameters.find(item => item.id === parameterId);
             if (!parameter) return;
@@ -2621,13 +2695,15 @@
         function render() {
             const container = document.getElementById('paramsContainer');
             container.innerHTML = '';
+            updateIaaJfaDifference();
 
             let totalPoints = 0;
 
             pdfParameters.forEach(p => {
                 const currentTierIdx = selectedTiers[p.id];
-                const currentScore = p.scores[currentTierIdx];
-                totalPoints += currentScore;
+                const hasSelectedTier = currentTierIdx !== null && currentTierIdx !== undefined;
+                const currentScore = hasSelectedTier ? p.scores[currentTierIdx] : 0;
+                totalPoints += currentScore ?? 0;
 
                 const matchesCategory = (activeCategory === 'all' || p.category === activeCategory);
                 const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
@@ -2645,6 +2721,10 @@
                 let tiersHtml = '';
                 for (let i = 0; i < 7; i++) {
                     const isActive = i === currentTierIdx;
+                    const requiredValueMissing = isRequiredMeasurement('front', p.id)
+                        && parseMeasurementValue(measurementInputs.front[p.id]) === null;
+                    const isCalculatedTier = p.id === 15;
+                    const isDisabled = requiredValueMissing || isCalculatedTier;
                     const valLabel = labelsArr[i];
                     const displayValue = valLabel.replace(/\s*\([+-]\)/g, '');
                     const safeLabel = displayValue.replace(/[&<>"']/g, char => ({
@@ -2661,8 +2741,8 @@
                         : 'bg-slate-900/70 hover:bg-slate-800 text-slate-300 border-slate-800 hover:border-slate-700';
 
                     tiersHtml += `
-                        <button type="button" onclick="setTier(${p.id}, ${i})" 
-                            class="tier-btn relative rounded-xl border text-xs text-center transition flex flex-col items-center justify-center gap-1.5 ${activeClass}" title="${safeLabel}">
+                        <button type="button" onclick="setTier(${p.id}, ${i})" ${isDisabled ? 'disabled' : ''}
+                            class="tier-btn relative rounded-xl border text-xs text-center transition flex flex-col items-center justify-center gap-1.5 ${activeClass} ${isDisabled ? 'opacity-40 cursor-not-allowed' : ''}" title="${safeLabel}">
                             <span class="text-[11px] uppercase font-black tracking-wider opacity-90">T${i+1}</span>
                             <span class="font-medium text-[10px] leading-snug w-full px-1">${displayLabel}</span>
                         </button>
@@ -2676,7 +2756,7 @@
                             <span class="text-base font-bold text-white tracking-wide">${p.name}</span>
                         </div>
                         <div class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900/90 border border-sky-900/70 text-sky-200 w-fit">
-                            Выбран Tier ${currentTierIdx + 1} (${currentScore > 0 ? '+' : ''}${currentScore} б.)
+                            ${hasSelectedTier ? `Выбран Tier ${currentTierIdx + 1} (${currentScore > 0 ? '+' : ''}${currentScore} б.)` : p.id === 15 ? 'Ожидает значения IAA и JFA' : 'Нужно ввести значение'}
                         </div>
                     </div>
                     <div class="flex flex-wrap justify-center gap-3">
@@ -2929,7 +3009,11 @@
                     ? 'assets/measurements/front/front-19-custom.png'
                     : isFront && parameter.id === 30
                         ? 'assets/measurements/front/front-30-custom.png'
-                    : `assets/measurements/${folder}/${prefix}-${imageNumber}.jpg`;
+                        : !isFront && parameter.id === 122
+                            ? 'assets/measurements/profile/profile-22-custom.png'
+                        : !isFront && parameter.id === 127
+                            ? 'assets/measurements/profile/profile-27-custom.png'
+                            : `assets/measurements/${folder}/${prefix}-${imageNumber}.jpg`;
                 const isFrontItem19 = isFront && parameter.id === 19;
                 const hasBlurBackground = !isFront || frontBlurBackgroundIds.has(parameter.id);
                 return `
@@ -3170,6 +3254,12 @@
         };
 
         window.setTier = function(paramId, tierIdx) {
+            if (paramId === 15) return;
+            if (isRequiredMeasurement('front', paramId)
+                && parseMeasurementValue(measurementInputs.front[paramId]) === null) {
+                showToast("Сначала введи обязательное значение.");
+                return;
+            }
             selectedTiers[paramId] = tierIdx;
             render();
         };
@@ -3207,6 +3297,7 @@
 
         window.resetValues = function() {
             pdfParameters.forEach(p => selectedTiers[p.id] = 0);
+            [4, 9, 15].forEach(parameterId => selectedTiers[parameterId] = null);
             Object.keys(measurementInputs.front).forEach(id => delete measurementInputs.front[id]);
             document.getElementById('searchInput').value = '';
             searchQuery = '';
