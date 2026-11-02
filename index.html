@@ -445,7 +445,7 @@
                                 <div class="text-5xl sm:text-6xl font-black tracking-tight text-white mb-2">
                                     <span id="finalScore" class="gradient-text">0.00</span>
                                 </div>
-                                <div class="text-xs text-slate-400">Сумма баллов: <span id="totalPoints" class="text-sky-200 font-semibold">0.00</span> / 34</div>
+                                <div class="text-xs text-slate-400">Сумма баллов: <span id="totalPoints" class="text-sky-200 font-semibold">0.00</span></div>
                             </div>
 
                             <div class="pt-4 border-t border-slate-800/80">
@@ -497,7 +497,7 @@
                                 <div class="text-5xl sm:text-6xl font-black tracking-tight text-white mb-2">
                                     <span id="profileFinalScore" class="gradient-text">0.00</span>
                                 </div>
-                                <div class="text-xs text-slate-400">Сумма баллов: <span id="profileTotalPoints" class="text-red-300 font-semibold">0.00</span> / 20</div>
+                                <div class="text-xs text-slate-400">Сумма баллов: <span id="profileTotalPoints" class="text-red-300 font-semibold">0.00</span></div>
                             </div>
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetProfileValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -544,7 +544,6 @@
                                     <span id="featureFinalScore" class="gradient-text">0.00</span>
                                 </div>
                                 <div class="text-xs text-slate-400">Сумма баллов: <span id="featureTotalPoints" class="text-amber-200 font-semibold">0.00</span></div>
-                                <p class="text-xs text-slate-500 mt-2">Сумма всех выбранных тиров ÷ 45</p>
                             </div>
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetFeatureValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -607,7 +606,6 @@
                                     <span id="angularityFinalScore" class="gradient-text">0.00</span>
                                 </div>
                                 <div class="text-xs text-slate-400">Сумма баллов: <span id="angularityTotalPoints" class="text-purple-200 font-semibold">0.00</span></div>
-                                <p class="text-xs text-slate-500 mt-2">Сумма выбранных тиров ÷ 15</p>
                             </div>
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetAngularityValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -670,7 +668,6 @@
                                     <span id="dimorphismFinalScore" class="gradient-text">0.00</span>
                                 </div>
                                 <div class="text-xs text-slate-400">Сумма баллов: <span id="dimorphismTotalPoints" class="dimorphism-theme-score font-semibold">0.00</span></div>
-                                <p class="text-xs text-slate-500 mt-2">Сумма выбранных тиров ÷ 15</p>
                             </div>
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetDimorphismValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -781,7 +778,7 @@
                     <i class="fa-solid fa-calculator overall-theme-icon text-xl" aria-hidden="true"></i>
                     <div>
                         <h2 class="text-2xl font-extrabold text-white">Общий балл</h2>
-                        <p class="text-sm leading-relaxed text-slate-400 mt-1">Оценки автоматически берутся из других вкладок. Чтобы изменить оценку, просто введи число в поле — оно сохранится, даже если изменятся остальные оценки. Кнопка «Сбросить оценки» вернёт автоматические значения. Расчёты выполняются без промежуточного округления, а результаты показываются с двумя знаками после запятой. Если разница между самой высокой и самой низкой оценкой достигает 1 балла, из взвешенного балла вычитается половина этой разницы.</p>
+                        <p class="text-sm leading-relaxed text-slate-400 mt-1">Оценки автоматически берутся из других вкладок. Чтобы изменить оценку, просто введи число в поле — оно сохранится, даже если изменятся остальные оценки. Кнопка «Сбросить оценки» вернёт автоматические значения. Расчёты выполняются без промежуточного округления. Если разница между самой высокой и самой низкой оценкой достигает 1 балла, из взвешенного балла вычитается половина этой разницы.</p>
                     </div>
                 </div>
             </section>
@@ -969,7 +966,7 @@
                         <div class="mb-4">
                             <h2 class="text-xl font-bold text-white">Как измерять</h2>
                             <p class="text-sm text-slate-400 mt-1">Здесь показаны примеры того, как делать замеры.</p>
-                            <p class="text-sm text-slate-300 mt-3">Красную линию делите на зелёную.<br>Чтобы получить значение в процентах, умножь результат на 100.</p>
+                            <p class="text-sm text-slate-300 mt-3">Красную линию делите на зелёную.<br>Чтобы получить значение в процентах, умножьте результат на 100.</p>
                         </div>
                         <div class="flex flex-wrap gap-2" role="tablist" aria-label="Выбрать ракурс замеров">
                             <button id="guideFrontTab" type="button" role="tab" aria-selected="true"
@@ -1049,7 +1046,7 @@
                 </div>
 
                 <figure class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col">
-                    <a href="assets/gimp/measure-tool.png" target="_blank" rel="noopener noreferrer"
+                    <a href="assets/gimp/measure-tool.png" data-image-preview
                         class="block rounded-xl overflow-hidden bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-sky-400"
                         aria-label="Открыть подсказку по инструменту измерения в GIMP крупнее">
                         <img src="assets/gimp/measure-tool.png" alt="Панель инструментов GIMP: выбран инструмент Measure, горячая клавиша Shift+M"
@@ -1145,7 +1142,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <article class="glass-card rounded-2xl p-5">
                             <h3 class="font-bold text-white">Выбирай подходящее фото</h3>
-                            <p class="text-sm leading-relaxed text-slate-400 mt-2">Камера должна быть примерно на уровне лица. Избегай широкоугольных селфи вблизи, наклона головы, фильтров и сильной ретуши.</p>
+                            <p class="text-sm leading-relaxed text-slate-400 mt-2">Камера должна быть примерно на уровне глаз. Избегай широкоугольных селфи вблизи, наклона головы, фильтров и сильной ретуши.</p>
                         </article>
                         <article class="glass-card rounded-2xl p-5">
                             <h3 class="font-bold text-white">Для фото профиля</h3>
@@ -1175,7 +1172,7 @@
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <article class="glass-card rounded-2xl p-3 sm:p-4">
-                            <a href="assets/guide/face-markup-basic.png" target="_blank" rel="noopener noreferrer"
+                            <a href="assets/guide/face-markup-basic.png" data-image-preview
                                 class="block rounded-xl overflow-hidden bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-sky-400"
                                 aria-label="Открыть базовую разметку лица крупнее">
                                 <img src="assets/guide/face-markup-basic.png"
@@ -1186,7 +1183,7 @@
                             <p class="text-xs leading-relaxed text-slate-400 mt-1">Базовая сетка для ориентирования.</p>
                         </article>
                         <article class="glass-card rounded-2xl p-3 sm:p-4">
-                            <a href="assets/guide/face-markup-thirds.png" target="_blank" rel="noopener noreferrer"
+                            <a href="assets/guide/face-markup-thirds.png" data-image-preview
                                 class="block rounded-xl overflow-hidden bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-sky-400"
                                 aria-label="Открыть разметку лица для замера третей крупнее">
                                 <img src="assets/guide/face-markup-thirds.png"
@@ -1197,7 +1194,7 @@
                             <p class="text-xs leading-relaxed text-slate-400 mt-1">Разметка для точного замера лицевых третей.</p>
                         </article>
                         <article class="glass-card rounded-2xl p-3 sm:p-4">
-                            <a href="assets/guide/face-markup-fifths.png" target="_blank" rel="noopener noreferrer"
+                            <a href="assets/guide/face-markup-fifths.png" data-image-preview
                                 class="block rounded-xl overflow-hidden bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-sky-400"
                                 aria-label="Открыть разметку лица для замера пятых долей крупнее">
                                 <img src="assets/guide/face-markup-fifths.png"
@@ -1208,7 +1205,7 @@
                             <p class="text-xs leading-relaxed text-slate-400 mt-1">Разметка для точного замера пятых долей лица.</p>
                         </article>
                     <figure class="glass-card rounded-2xl p-3 sm:p-4 md:col-start-2">
-                        <a href="assets/guide/jaw-thirds.png" target="_blank" rel="noopener noreferrer"
+                        <a href="assets/guide/jaw-thirds.png" data-image-preview
                             class="block rounded-xl overflow-hidden bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-sky-400"
                             aria-label="Открыть разметку для измерения челюстных третей крупнее">
                             <img src="assets/guide/jaw-thirds.png"
@@ -1277,7 +1274,7 @@
                     </div>
                     <div class="glass-card rounded-2xl p-5 max-w-3xl">
                         <ul class="space-y-2 text-sm leading-relaxed text-slate-300">
-                            <li><span class="font-semibold text-white">Гармония — 32%</span> от общего балла: анфас — 60% оценки гармонии, профиль — 40%.</li>
+                            <li><span class="font-semibold text-white">Гармония — 32% (анфас 60%, профиль 40%)</span>.</li>
                             <li><span class="font-semibold text-white">Фичерс — 26%.</span></li>
                             <li><span class="font-semibold text-white">Угловатость — 22%.</span></li>
                             <li><span class="font-semibold text-white">Диморфизм — 20%.</span></li>
@@ -1456,7 +1453,7 @@
                         </div>
 
                         <figure class="glass-card rounded-2xl p-3 sm:p-4 lg:sticky lg:top-6">
-                            <a href="assets/guide/angularity-face-guide.png" target="_blank" rel="noopener noreferrer"
+                            <a href="assets/guide/angularity-face-guide.png" data-image-preview
                                 class="block rounded-xl overflow-hidden bg-slate-950/70 focus:outline-none focus:ring-2 focus:ring-sky-400"
                                 aria-label="Открыть изображение угловатости лица крупнее">
                                 <img src="assets/guide/angularity-face-guide.png"
@@ -1476,6 +1473,17 @@
             <i class="fa-solid fa-check text-xs"></i>
         </div>
         <span id="toastText" class="text-sm font-medium text-slate-200">Успешно!</span>
+    </div>
+
+    <div id="imagePreviewModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4"
+        role="dialog" aria-modal="true" aria-label="Просмотр изображения" tabindex="-1">
+        <button id="imagePreviewClose" type="button"
+            class="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full bg-slate-800/90 text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-sky-400"
+            aria-label="Закрыть изображение">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <img id="imagePreviewImage" class="max-h-full max-w-full rounded-lg object-contain"
+            alt="">
     </div>
 
     <script>
@@ -3117,7 +3125,7 @@
                 const hasBlurBackground = !isFront || frontBlurBackgroundIds.has(parameter.id);
                 return `
                     <article class="glass-card rounded-2xl p-4 flex flex-col">
-                        <a href="${imagePath}" target="_blank" rel="noopener noreferrer"
+                        <a href="${imagePath}" data-image-preview
                             class="${hasBlurBackground ? 'relative isolate ' : ''}${isFrontItem19 ? 'flex justify-center ' : 'block ' }rounded-xl overflow-hidden ${isFrontItem19 ? '' : 'bg-slate-950/70 '}focus:outline-none focus:ring-2 focus:ring-purple-400"
                             aria-label="Открыть схему замера: ${title}">
                             ${hasBlurBackground ? `<img src="${imagePath}" alt="" aria-hidden="true" loading="lazy"
@@ -3457,6 +3465,46 @@
                 toast.classList.add('translate-y-24', 'opacity-0');
             }, 3000);
         }
+
+        const imagePreviewModal = document.getElementById('imagePreviewModal');
+        const imagePreviewImage = document.getElementById('imagePreviewImage');
+        const imagePreviewClose = document.getElementById('imagePreviewClose');
+        let imagePreviewTrigger = null;
+        let previousBodyOverflow = '';
+
+        function closeImagePreview() {
+            if (imagePreviewModal.classList.contains('hidden')) return;
+            imagePreviewModal.classList.add('hidden');
+            imagePreviewModal.classList.remove('flex');
+            imagePreviewImage.removeAttribute('src');
+            document.body.style.overflow = previousBodyOverflow;
+            imagePreviewTrigger?.focus();
+            imagePreviewTrigger = null;
+        }
+
+        document.addEventListener('click', event => {
+            const link = event.target.closest('a[data-image-preview]');
+            if (link) {
+                event.preventDefault();
+                imagePreviewTrigger = link;
+                previousBodyOverflow = document.body.style.overflow;
+                const thumbnail = link.querySelector('img:not([aria-hidden="true"])');
+                imagePreviewImage.src = link.href;
+                imagePreviewImage.alt = thumbnail?.alt || link.getAttribute('aria-label') || 'Просмотр изображения';
+                imagePreviewModal.classList.remove('hidden');
+                imagePreviewModal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+                imagePreviewClose.focus();
+                return;
+            }
+
+            if (event.target === imagePreviewModal) closeImagePreview();
+        });
+
+        imagePreviewClose.addEventListener('click', closeImagePreview);
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeImagePreview();
+        });
 
         render();
         renderProfile();
