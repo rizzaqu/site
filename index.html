@@ -494,6 +494,18 @@
         #tabBtnGuide[class~="bg-slate-600"] {
             background-color: var(--theme-accent) !important;
         }
+        #guidePanelFormula .formula-male-card {
+            border-color: rgba(56, 189, 248, 0.28) !important;
+        }
+        #guidePanelFormula .formula-male-icon {
+            background-color: rgba(56, 189, 248, 0.14) !important;
+            color: #7dd3fc !important;
+        }
+        #guidePanelFormula .formula-male-weight {
+            background-color: rgba(56, 189, 248, 0.12) !important;
+            border-color: rgba(56, 189, 248, 0.26) !important;
+            color: #bae6fd !important;
+        }
         input:focus {
             border-color: var(--theme-accent) !important;
         }
@@ -556,7 +568,7 @@
                     <i class="fa-solid fa-wand-magic-sparkles"></i> Особенности (47 пунктов)
                 </button>
                 <button onclick="switchTab('angularity')" id="tabBtnAngularity" class="px-6 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2 bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800">
-                    <i class="fa-solid fa-gem"></i> Угловатость (11 пунктов)
+                    <i class="fa-solid fa-gem"></i> Угловатость (10 пунктов)
                 </button>
                 <button onclick="switchTab('dimorphism')" id="tabBtnDimorphism" class="px-6 py-2.5 rounded-xl text-sm font-semibold transition flex items-center gap-2 bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800">
                     <i class="fa-solid fa-venus-mars"></i> Диморфизм (15 пунктов)
@@ -790,7 +802,7 @@
                                 <div class="text-5xl sm:text-6xl font-black tracking-tight text-white mb-2">
                                     <span id="angularityFinalScore" class="gradient-text">0.00</span>
                                 </div>
-                                <div class="text-xs text-slate-400">Сумма баллов: <span id="angularityTotalPoints" class="text-purple-200 font-semibold">0.00</span> / <span id="angularityMaxPoints">0</span></div>
+                                <div class="text-xs text-slate-400">Сумма баллов: <span id="angularityTotalPoints" class="text-purple-200 font-semibold">0.00</span></div>
                             </div>
                             <div class="pt-4 border-t border-slate-800/80">
                                 <button onclick="resetAngularityValues()" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 text-xs font-bold transition active:scale-95 flex items-center justify-center gap-2 shadow-md">
@@ -1011,7 +1023,7 @@
                         <div class="glass-card rounded-xl p-4 grid grid-cols-1 sm:grid-cols-[1fr_7rem] gap-3 items-center">
                             <div>
                                 <label for="overallScoreAngularity" class="font-semibold text-white">Угловатость</label>
-                                <p class="text-xs text-slate-400 mt-1">22% общего балла</p>
+                                <p class="text-xs text-slate-400 mt-1"><span id="overallAngularityInputWeight">22%</span> общего балла</p>
                             </div>
                             <input id="overallScoreAngularity" type="number" min="0" max="10" step="any" value="0" oninput="setOverallScoreManual('angularity')" aria-label="Оценка угловатости"
                                 class="overall-theme-focus w-full rounded-lg bg-slate-900/80 border border-slate-700 px-3 py-2 text-right text-sm text-slate-200 focus:outline-none focus:ring-2">
@@ -1019,7 +1031,7 @@
                         <div class="glass-card rounded-xl p-4 grid grid-cols-1 sm:grid-cols-[1fr_7rem] gap-3 items-center">
                             <div>
                                 <label for="overallScoreDimorphism" class="font-semibold text-white">Диморфизм</label>
-                                <p class="text-xs text-slate-400 mt-1">20% общего балла</p>
+                                <p class="text-xs text-slate-400 mt-1"><span id="overallDimorphismInputWeight">20%</span> общего балла</p>
                             </div>
                             <input id="overallScoreDimorphism" type="number" min="0" max="10" step="any" value="0" oninput="setOverallScoreManual('dimorphism')" aria-label="Оценка диморфизма"
                                 class="overall-theme-focus w-full rounded-lg bg-slate-900/80 border border-slate-700 px-3 py-2 text-right text-sm text-slate-200 focus:outline-none focus:ring-2">
@@ -1062,8 +1074,8 @@
                     <div class="space-y-2 border-t border-slate-800 pt-4 text-sm">
                         <div class="flex justify-between gap-4 text-slate-300"><span>Гармония (анфас 60%, профиль 40%) × 32%</span><span id="overallHarmonyContribution" class="font-semibold tabular-nums">0.00</span></div>
                         <div class="flex justify-between gap-4 text-slate-300"><span>Особенности × 26%</span><span id="overallFeaturesContribution" class="font-semibold tabular-nums">0.00</span></div>
-                        <div class="flex justify-between gap-4 text-slate-300"><span>Угловатость × 22%</span><span id="overallAngularityContribution" class="font-semibold tabular-nums">0.00</span></div>
-                        <div class="flex justify-between gap-4 text-slate-300"><span>Диморфизм × 20%</span><span id="overallDimorphismContribution" class="font-semibold tabular-nums">0.00</span></div>
+                        <div class="flex justify-between gap-4 text-slate-300"><span>Угловатость × <span id="overallAngularityBreakdownWeight">22%</span></span><span id="overallAngularityContribution" class="font-semibold tabular-nums">0.00</span></div>
+                        <div class="flex justify-between gap-4 text-slate-300"><span>Диморфизм × <span id="overallDimorphismBreakdownWeight">20%</span></span><span id="overallDimorphismContribution" class="font-semibold tabular-nums">0.00</span></div>
                         <div class="flex justify-between gap-4 border-t border-slate-800 pt-2 text-rose-300"><span>Штраф за дисбаланс</span><span id="overallPenaltyContribution" class="font-semibold tabular-nums">−0.00</span></div>
                     </div>
                 </aside>
@@ -1295,7 +1307,7 @@
                     <i class="fa-solid fa-lightbulb text-slate-400 mt-1"></i>
                     <div>
                         <h3 class="font-bold text-white">Небольшая подсказка</h3>
-                        <p class="text-sm leading-relaxed text-slate-400 mt-1">Пиксели сами по себе не являются миллиметрами: для относительных показателей важны именно соотношения расстояний. Углы записывай в градусах, а не в пикселях. Перед измерениями выбери точки на фотографии внимательно и используй одинаковые ориентиры.</p>
+                        <p class="text-sm leading-relaxed text-slate-400 mt-1">Пиксели сами по себе не являются миллиметрами: для относительных показателей важны именно соотношения расстояний. Углы записывай в градусах, а не в пикселях. Перед измерениями внимательно сделай разметку на фотографии и используй одинаковые ориентиры.</p>
                     </div>
                 </div>
             </aside>
@@ -1496,13 +1508,59 @@
                         <i class="fa-solid fa-calculator text-sky-300 text-xl" aria-hidden="true"></i>
                         <h2 class="text-xl font-bold text-white">Формула общего балла</h2>
                     </div>
-                    <div class="glass-card rounded-2xl p-5 max-w-3xl">
-                        <ul class="space-y-2 text-sm leading-relaxed text-slate-300">
-                            <li><span class="font-semibold text-white">Гармония — 32% (анфас 60%, профиль 40%)</span>.</li>
-                            <li><span class="font-semibold text-white">Особенности — 26%.</span></li>
-                            <li><span class="font-semibold text-white">Угловатость — 22%.</span></li>
-                            <li><span class="font-semibold text-white">Диморфизм — 20%.</span></li>
-                        </ul>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <article class="formula-male-card glass-card rounded-2xl p-4 sm:p-5 border border-sky-400/20">
+                            <header class="flex items-center gap-3 mb-4">
+                                <span class="formula-male-icon grid h-10 w-10 place-items-center rounded-xl bg-sky-400/10 text-sky-300">
+                                    <i class="fa-solid fa-mars" aria-hidden="true"></i>
+                                </span>
+                                <h3 class="text-base font-bold text-white">Для мужчин</h3>
+                            </header>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span><span class="block font-semibold text-slate-100">Гармония</span><span class="text-xs text-slate-400">Анфас — 60% · профиль — 40%</span></span>
+                                    <span class="formula-male-weight rounded-full border border-sky-300/20 bg-sky-300/10 px-3 py-1 font-bold tabular-nums text-sky-200">32%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span class="font-semibold text-slate-100">Особенности</span>
+                                    <span class="formula-male-weight rounded-full border border-sky-300/20 bg-sky-300/10 px-3 py-1 font-bold tabular-nums text-sky-200">26%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span class="font-semibold text-slate-100">Угловатость</span>
+                                    <span class="formula-male-weight rounded-full border border-sky-300/20 bg-sky-300/10 px-3 py-1 font-bold tabular-nums text-sky-200">22%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span class="font-semibold text-slate-100">Диморфизм</span>
+                                    <span class="formula-male-weight rounded-full border border-sky-300/20 bg-sky-300/10 px-3 py-1 font-bold tabular-nums text-sky-200">20%</span>
+                                </li>
+                            </ul>
+                        </article>
+                        <article class="glass-card rounded-2xl p-4 sm:p-5 border border-fuchsia-400/20">
+                            <header class="flex items-center gap-3 mb-4">
+                                <span class="grid h-10 w-10 place-items-center rounded-xl bg-fuchsia-400/10 text-fuchsia-300">
+                                    <i class="fa-solid fa-venus" aria-hidden="true"></i>
+                                </span>
+                                <h3 class="text-base font-bold text-white">Для женщин</h3>
+                            </header>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span><span class="block font-semibold text-slate-100">Гармония</span><span class="text-xs text-slate-400">Анфас — 60% · профиль — 40%</span></span>
+                                    <span class="rounded-full border border-fuchsia-300/20 bg-fuchsia-300/10 px-3 py-1 font-bold tabular-nums text-fuchsia-200">32%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span class="font-semibold text-slate-100">Особенности</span>
+                                    <span class="rounded-full border border-fuchsia-300/20 bg-fuchsia-300/10 px-3 py-1 font-bold tabular-nums text-fuchsia-200">26%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span class="font-semibold text-slate-100">Угловатость</span>
+                                    <span class="rounded-full border border-fuchsia-300/20 bg-fuchsia-300/10 px-3 py-1 font-bold tabular-nums text-fuchsia-200">19%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4 rounded-xl bg-slate-950/30 px-4 py-3">
+                                    <span class="font-semibold text-slate-100">Диморфизм</span>
+                                    <span class="rounded-full border border-fuchsia-300/20 bg-fuchsia-300/10 px-3 py-1 font-bold tabular-nums text-fuchsia-200">23%</span>
+                                </li>
+                            </ul>
+                        </article>
                     </div>
                 </section>
             </div>
@@ -1776,7 +1834,7 @@
                 "Гармония анфаса (36 параметров)": "Front harmony (36 parameters)",
                 "Гармония профиля (27 параметров)": "Side harmony (27 parameters)",
                 "Особенности (47 пунктов)": "Features (47 items)",
-                "Угловатость (11 пунктов)": "Angularity (11 items)",
+                "Угловатость (10 пунктов)": "Angularity (10 items)",
                 "Диморфизм (15 пунктов)": "Dimorphism (15 items)",
                 "Общий балл": "Overall score",
                 "Пол для расчета:": "Gender for calculations:",
@@ -1829,6 +1887,8 @@
                 "Особенности": "Features",
                 "Угловатость": "Angularity",
                 "Диморфизм": "Dimorphism",
+                "Для мужчин": "For men",
+                "Анфас — 60% · профиль — 40%": "Front — 60% · profile — 40%",
                 "Штраф за дисбаланс": "Imbalance penalty",
                 "Инструкция по замерам": "Measurement guide",
                 "Выбери программу или сначала посмотри схемы, чтобы понять, между какими точками измерять.": "Choose a tool, or review the diagrams first to see which points to measure between.",
@@ -1878,7 +1938,7 @@
                 "Замерь и рассчитай": "Measure and calculate",
                 "Зажми левую кнопку мыши в первой точке и протяни до второй. GIMP покажет длину в пикселях. Для пропорции раздели одно расстояние на другое; чтобы получить проценты, умножь результат на 100.": "Hold the left mouse button at the first point and drag to the second. GIMP displays the length in pixels. Divide one distance by another to get a ratio; multiply by 100 to convert it to a percentage.",
                 "Небольшая подсказка": "A quick tip",
-                "Пиксели сами по себе не являются миллиметрами: для относительных показателей важны именно соотношения расстояний. Углы записывай в градусах, а не в пикселях. Перед измерениями выбери точки на фотографии внимательно и используй одинаковые ориентиры.": "Pixels are not millimetres: relative measurements depend on ratios between distances. Record angles in degrees, not pixels. Before measuring, choose points carefully and use consistent landmarks.",
+                "Пиксели сами по себе не являются миллиметрами: для относительных показателей важны именно соотношения расстояний. Углы записывай в градусах, а не в пикселях. Перед измерениями внимательно сделай разметку на фотографии и используй одинаковые ориентиры.": "Pixels are not millimetres: relative measurements depend on ratios between distances. Record angles in degrees, not pixels. Before measuring, carefully mark up the photo and use consistent landmarks.",
                 "Замеры в Photoshop": "Measurements in Photoshop",
                 "Линейка и панель «Инфо» помогут измерить расстояния в пикселях.": "The Ruler tool and Info panel can help measure distances in pixels.",
                 "1. Открой фото": "1. Open a photo",
@@ -1913,6 +1973,9 @@
                 "Штраф вычитается из общего балла.": "The penalty is subtracted from the overall score.",
                 "Например, при отклонении 3,20 (выше порога 0,5) штраф составляет 1,60 балла.": "For example, with a deviation of 3.20 (above the 0.5 threshold), the penalty is 1.60 points.",
                 "Особенности — 26%.": "Features — 26%.",
+                "Для женщин": "For women",
+                "Угловатость — 19%.": "Angularity — 19%.",
+                "Диморфизм — 23%.": "Dimorphism — 23%.",
                 "Ориентир общего балла": "Overall score reference",
                 "Категория определяется по итоговому баллу и выбранной градации пола.": "The category is based on the total score and selected gender scale.",
                 "Фото в таблице отсутствует": "No photo available",
@@ -1930,7 +1993,6 @@
                 "штраф не применяется": "no penalty applies",
                 "Пол изменен на:": "Gender changed to:",
                 "Значения сброшены": "Values have been reset",
-                "Значения профиля сброшены": "Profile values have been reset",
                 "Оценки особенностей сброшены": "Feature scores have been reset",
                 "Оценки угловатости сброшены": "Angularity scores have been reset",
                 "Оценки диморфизма сброшены": "Dimorphism scores have been reset",
@@ -1970,22 +2032,23 @@
                 "Кожа": "Skin",
                 "Волосы": "Hair",
                 "Прочее": "Other",
-                "Видимость нижней челюсти (анфас)": "Visibility of the lower jaw (front view)",
-                "Широкая нижняя челюсть, чёткий контур, отсутствие жира в нижней части лица.": "A wide lower jaw with a defined contour and little fat in the lower face.",
-                "3D-шность лица": "Facial 3D structure",
+                "Видимость мандибулы (анфас)": "Mandible visibility (front)",
+                "Широкая нижняя челюсть, чёткий контур, отсутствие жира в нижней части лица.": "Broad mandible flare, clear contour, no lower-face fat masking",
+                "3D-шность лица": "Facial 3D-ness",
                 "Сильная проекция средней части лица вперёд, выраженная глубина передней части, хорошая поддержка орбитальной зоны (инфраорбиталис).": "Strong forward projection and depth in the midface, with good support beneath the eye sockets.",
-                "Острота углов челюсти (гонионов)": "Definition of the jaw angles (gonions)",
-                "Чётко очерченный угол нижней челюсти, видимый край.": "A sharply defined mandibular angle with a visible edge.",
+                "Сильная проекция средней части лица вперёд, выраженная выпуклость передней части, хорошая поддержка орбитальной зоны (инфраорбиталис).": "Strong midface projection, sharp anterior depth, good orbital support",
+                "Форма и острота гонионов": "Gonion shape & sharpness",
+                "Чётко очерченный угол нижней челюсти, видимый край.": "Well-defined gonial angle (120°–130°), visible edge",
                 "Глубина лица": "Facial depth",
-                "Сильная проекция верхней (максилла) и нижней челюсти.": "Strong projection of both the upper jaw (maxilla) and lower jaw.",
-                "Ogee Curve (3/4)": "Ogee Curve (3/4)",
-                "Чётко выраженный изгиб средней части лица, сильная проекция высоких скул.": "A clearly defined midface curve and strong projection of high cheekbones.",
+                "Сильная проекция верхней (максилла) и нижней челюсти.": "Strong maxilla + mandible forward projection",
+                "Ogee Curve": "Ogee Curve",
+                "Чётко выраженный изгиб средней части лица, выраженный выступ скул.": "Defined midface curve, strong high cheekbone projection",
                 "Видимость скул": "Cheekbone visibility",
-                "Высокие, широко расставленные скуловые кости, сильная латеральная (боковая) проекция, чёткая линия тени (так называемые впалые щёки).": "High, wide-set cheekbones with strong lateral projection and a clearly defined shadow line (hollow cheeks).",
+                "Высокие, широко расставленные скулы, выраженный боковой выступ, резкая линия тени (так называемые впалые щёки).": "High, wide-set malars, strong lateral projection, sharp shadow line (aka. hollow cheeks)",
                 "Угловатость подбородка": "Chin angularity",
-                "Квадратная форма подбородка, чётко очерченный погонион (самая передняя точка подбородка), низкая выпуклость.": "A square chin, a clearly defined pogonion (the chin's most forward point), and low convexity.",
+                "Квадратная форма подбородка, чётко очерченный погонион (самая передняя точка подбородка), низкая выпуклость.": "Squared chin pad, sharp pogonion definition, low convexity",
                 "Жир в нижней и средней частях лица": "Fat in the lower and midface",
-                "Минимальное количество комков Биша (щёчного жира), хороший контур челюсти.": "Minimal buccal fat and a well-defined jawline.",
+                "Минимальное количество комков Биша (щёчного жира), хороший контур челюсти.": "Minimal buccal fat, sharp lines, lean jaw contour",
                 "Ширина челюсти (Bigonial width)": "Jaw width (Bigonial width)",
                 "Носолобный угол (Nasofrontal Angle)": "Nasofrontal Angle",
                 "Наклон надбровных дуг (Browridge Inclination Angle)": "Browridge Inclination Angle",
@@ -2134,6 +2197,7 @@
                 "26% общего балла": "26% of the total",
                 "22% общего балла": "22% of the total",
                 "20% общего балла": "20% of the total",
+                " общего балла": " of the total",
                 "Ручные оценки должны быть в диапазоне от 0 до 10.": "Manual scores must be between 0 and 10.",
                 "Почему нет автозамера гармонии?": "Why is there no automatic harmony measurement?",
                 "Потому что это довольно неточный инструмент. Автоматический анализ может неверно определить ключевые точки лица из-за ракурса, перспективных искажений камеры, освещения или мимики. Даже небольшая ошибка в положении точки заметно влияет на итоговые пропорции и баллы.": "Because it is quite an inaccurate tool. Automatic analysis can misidentify facial landmarks due to camera angle, perspective distortion, lighting, or facial expression. Even a small landmark error can noticeably affect the resulting proportions and scores.",
@@ -2176,21 +2240,21 @@
                 "Сужение скул: изменение ширины и выпуклости скул, способствующее улучшению общего контура и эстетики лица — желательна овальная форма.": "Cheekbone taper: changes in cheekbone width and convexity that improve the overall facial contour and aesthetics; an oval shape is preferred.",
                 "Впалость скул: определённую роль играет распределение жировых отложений. Излишняя худоба в этой зоне нежелательна, так как создаёт болезненный вид.": "Cheek hollowness: fat distribution matters. Excessive thinness in this area is undesirable because it can create a gaunt appearance.",
                 "Здесь мы должны оценить, сколько щёчного жира находится внутри щёк — баланс является ключевым фактором.": "Assess the amount of buccal fat in the cheeks here; balance is key.",
-                "Видимость нижней челюсти (анфас)": "Visibility of the lower jaw (front view)",
-                "Широкая нижняя челюсть, чёткий контур, отсутствие жира в нижней части лица.": "A wide lower jaw with a defined contour and little fat in the lower face.",
-                "3D-шность лица": "Facial 3D structure",
+                "Видимость мандибулы (анфас)": "Mandible visibility (front)",
+                "Широкая нижняя челюсть, чёткий контур, отсутствие жира в нижней части лица.": "Broad mandible flare, clear contour, no lower-face fat masking",
+                "3D-шность лица": "Facial 3D-ness",
                 "Сильная проекция средней части лица вперёд, выраженная глубина передней части, хорошая поддержка орбитальной зоны (инфраорбиталис).": "Strong forward projection and depth in the midface, with good support beneath the eye sockets.",
-                "Острота углов челюсти (гонионов)": "Definition of the jaw angles (gonions)",
-                "Чётко очерченный угол нижней челюсти, видимый край.": "A sharply defined mandibular angle with a visible edge.",
+                "Форма и острота гонионов": "Gonion shape & sharpness",
+                "Чётко очерченный угол нижней челюсти, видимый край.": "Well-defined gonial angle (120°–130°), visible edge",
                 "Глубина лица": "Facial depth",
-                "Сильная проекция верхней (максилла) и нижней челюсти.": "Strong projection of both the upper jaw (maxilla) and lower jaw.",
-                "Чётко выраженный изгиб средней части лица, сильная проекция высоких скул.": "A clearly defined midface curve and strong projection of high cheekbones.",
+                "Сильная проекция верхней (максилла) и нижней челюсти.": "Strong maxilla + mandible forward projection",
+                "Чётко выраженный изгиб средней части лица, выраженный выступ скул.": "Defined midface curve, strong high cheekbone projection",
                 "Видимость скул": "Cheekbone visibility",
-                "Высокие, широко расставленные скуловые кости, сильная латеральная (боковая) проекция, чёткая линия тени (так называемые впалые щёки).": "High, wide-set cheekbones with strong lateral projection and a clearly defined shadow line (hollow cheeks).",
+                "Высокие, широко расставленные скулы, выраженный боковой выступ, резкая линия тени (так называемые впалые щёки).": "High, wide-set malars, strong lateral projection, sharp shadow line (aka. hollow cheeks)",
                 "Угловатость подбородка": "Chin angularity",
-                "Квадратная форма подбородка, чётко очерченный погонион (самая передняя точка подбородка), низкая выпуклость.": "A square chin, a clearly defined pogonion (the chin's most forward point), and low convexity.",
+                "Квадратная форма подбородка, чётко очерченный погонион (самая передняя точка подбородка), низкая выпуклость.": "Squared chin pad, sharp pogonion definition, low convexity",
                 "Жир в нижней и средней частях лица": "Fat in the lower and midface",
-                "Минимальное количество комков Биша (щёчного жира), хороший контур челюсти.": "Minimal buccal fat and a well-defined jawline.",
+                "Минимальное количество комков Биша (щёчного жира), хороший контур челюсти.": "Minimal buccal fat, sharp lines, lean jaw contour",
                 "Периорбитальное потемнение": "Periorbital darkening",
                 "Форма глаз": "Eye shape",
                 "Миндальновидная": "Almond-shaped",
@@ -2369,11 +2433,11 @@
                 "Угол челюсти чётко виден сбоку.": "The jaw angle is clearly visible from the side.",
                 "Верхняя челюсть в профиль": "Upper jaw (profile)",
                 "Верхняя челюсть заметно выступает вперёд в профиль.": "The upper jaw projects noticeably forward in profile.",
-                "Видимость мандибулы и ramus": "Visibility of the mandible and ramus",
-                "Длинная, высокая ветвь челюсти (ramus), чёткий контур задней части челюсти, который хорошо виден спереди.": "A long, tall mandibular ramus and a well-defined rear jaw contour visible from the front.",
+                "Видимость мандибулы и ramus": "Mandible & ramus visibility",
+                "Длинная, высокая ветвь челюсти (ramus), чёткий контур задней части челюсти, который хорошо виден спереди.": "Long, tall ramus, sharp rear-jaw contour clearly visible from front",
                 "Переход от скулы к щеке чётко очерчен.": "The transition from cheekbone to cheek is clearly defined.",
                 "Контур скул в 3/4": "Cheekbone contour (3/4)",
-                "Жир в нижней и средней частях лица": "Fat in the lower and mid-face",
+                "Жир в нижней и средней частях лица": "Lower-midface fat",
                 "В щеках и нижней части лица жировая прослойка небольшая, контуры челюсти хорошо видны.": "There is little fullness in the cheeks and lower face, and the jawline is clearly visible.",
                 "Надбровные дуги": "Brow ridge",
                 "Выступ над глазами хорошо заметен.": "The brow ridge is clearly visible.",
@@ -2389,7 +2453,7 @@
                 "Гармония анфаса (36 параметров)": "Гармонія анфасу (36 параметрів)",
                 "Гармония профиля (27 параметров)": "Гармонія профілю (27 параметрів)",
                 "Особенности (47 пунктов)": "Риси (47 пунктів)",
-                "Угловатость (11 пунктов)": "Кутастість (11 пунктів)",
+                "Угловатость (10 пунктов)": "Кутастість (10 пунктів)",
                 "Диморфизм (15 пунктов)": "Диморфізм (15 пунктів)",
                 "Общий балл": "Загальний бал",
                 "Пол для расчета:": "Стать для розрахунку:",
@@ -2442,6 +2506,8 @@
                 "Особенности": "Риси",
                 "Угловатость": "Кутастість",
                 "Диморфизм": "Диморфізм",
+                "Для мужчин": "Для чоловіків",
+                "Анфас — 60% · профиль — 40%": "Анфас — 60% · профіль — 40%",
                 "Штраф за дисбаланс": "Штраф за дисбаланс",
                 "Инструкция по замерам": "Інструкція з вимірювань",
                 "Выбери программу или сначала посмотри схемы, чтобы понять, между какими точками измерять.": "Оберіть програму або спершу перегляньте схеми, щоб зрозуміти, між якими точками вимірювати.",
@@ -2491,7 +2557,7 @@
                 "Замерь и рассчитай": "Виміряйте й обчисліть",
                 "Зажми левую кнопку мыши в первой точке и протяни до второй. GIMP покажет длину в пикселях. Для пропорции раздели одно расстояние на другое; чтобы получить проценты, умножь результат на 100.": "Затисніть ліву кнопку миші в першій точці й перетягніть до другої. GIMP покаже довжину в пікселях. Щоб отримати пропорцію, поділіть одну відстань на іншу; для відсотків помножте результат на 100.",
                 "Небольшая подсказка": "Невелика підказка",
-                "Пиксели сами по себе не являются миллиметрами: для относительных показателей важны именно соотношения расстояний. Углы записывай в градусах, а не в пикселях. Перед измерениями выбери точки на фотографии внимательно и используй одинаковые ориентиры.": "Пікселі самі по собі не є міліметрами: для відносних показників важливе співвідношення відстаней. Кути записуйте в градусах, а не в пікселях. Перед вимірюванням уважно оберіть точки на фото й використовуйте однакові орієнтири.",
+                "Пиксели сами по себе не являются миллиметрами: для относительных показателей важны именно соотношения расстояний. Углы записывай в градусах, а не в пикселях. Перед измерениями внимательно сделай разметку на фотографии и используй одинаковые ориентиры.": "Пікселі самі по собі не є міліметрами: для відносних показників важливе співвідношення відстаней. Кути записуй у градусах, а не в пікселях. Перед вимірюваннями уважно зроби розмітку на фото й використовуй однакові орієнтири.",
                 "Замеры в Photoshop": "Вимірювання у Photoshop",
                 "Линейка и панель «Инфо» помогут измерить расстояния в пикселях.": "Лінійка та панель «Інфо» допоможуть виміряти відстані в пікселях.",
                 "1. Открой фото": "1. Відкрийте фото",
@@ -2526,6 +2592,9 @@
                 "Штраф вычитается из общего балла.": "Штраф віднімається від загального бала.",
                 "Например, при отклонении 3,20 (выше порога 0,5) штраф составляет 1,60 балла.": "Наприклад, за відхилення 3,20 (вище порога 0,5) штраф становить 1,60 бала.",
                 "Особенности — 26%.": "Риси — 26%.",
+                "Для женщин": "Для жінок",
+                "Угловатость — 19%.": "Кутастість — 19%.",
+                "Диморфизм — 23%.": "Диморфізм — 23%.",
                 "Ориентир общего балла": "Орієнтир загального бала",
                 "Категория определяется по итоговому баллу и выбранной градации пола.": "Категорія визначається за підсумковим балом і обраною шкалою статі.",
                 "Фото в таблице отсутствует": "Фото в таблиці відсутнє",
@@ -2543,7 +2612,6 @@
                 "штраф не применяется": "штраф не застосовується",
                 "Пол изменен на:": "Стать змінено на:",
                 "Значения сброшены": "Значення скинуто",
-                "Значения профиля сброшены": "Значення профілю скинуто",
                 "Оценки особенностей сброшены": "Оцінки рис скинуто",
                 "Оценки угловатости сброшены": "Оцінки кутастості скинуто",
                 "Оценки диморфизма сброшены": "Оцінки диморфізму скинуто",
@@ -2580,15 +2648,16 @@
                 "Кожа": "Шкіра",
                 "Волосы": "Волосся",
                 "Прочее": "Інше",
-                "Видимость нижней челюсти (анфас)": "Видимість нижньої щелепи (анфас)",
+                "Видимость мандибулы (анфас)": "Видимість мандибули (анфас)",
                 "Широкая нижняя челюсть, чёткий контур, отсутствие жира в нижней части лица.": "Широка нижня щелепа, чіткий контур, відсутність жиру в нижній частині обличчя.",
                 "3D-шность лица": "Об'ємність обличчя",
                 "Сильная проекция средней части лица вперёд, выраженная глубина передней части, хорошая поддержка орбитальной зоны (инфраорбиталис).": "Сильна проєкція середньої частини обличчя вперед, виражена глибина передньої частини та добра підтримка підочноямкової зони.",
+                "Сильная проекция средней части лица вперёд, выраженная выпуклость передней части, хорошая поддержка орбитальной зоны (инфраорбиталис).": "Сильна проєкція середньої частини обличчя вперед, виражена опуклість передньої частини та добра підтримка підочноямкової зони.",
                 "Острота углов челюсти (гонионов)": "Чіткість кутів щелепи (гоніонів)",
                 "Чётко очерченный угол нижней челюсти, видимый край.": "Чітко окреслений кут нижньої щелепи, видимий край.",
                 "Глубина лица": "Глибина обличчя",
                 "Сильная проекция верхней (максилла) и нижней челюсти.": "Сильна проєкція верхньої (максили) та нижньої щелепи.",
-                "Ogee Curve (3/4)": "Ogee Curve (3/4)",
+                "Ogee Curve": "Ogee Curve",
                 "Чётко выраженный изгиб средней части лица, сильная проекция высоких скул.": "Чітко виражений вигин середньої частини обличчя, сильна проєкція високих вилиць.",
                 "Видимость скул": "Видимість вилиць",
                 "Высокие, широко расставленные скуловые кости, сильная латеральная (боковая) проекция, чёткая линия тени (так называемые впалые щёки).": "Високі, широко розставлені виличні кістки, сильна бічна проєкція та чітка лінія тіні (так звані запалі щоки).",
@@ -2742,6 +2811,7 @@
                 "26% общего балла": "26% загального бала",
                 "22% общего балла": "22% загального бала",
                 "20% общего балла": "20% загального бала",
+                " общего балла": " загального бала",
                 "Почему нет автозамера гармонии?": "Чому немає автоматичного вимірювання гармонії?",
                 "Потому что это довольно неточный инструмент. Автоматический анализ может неверно определить ключевые точки лица из-за ракурса, перспективных искажений камеры, освещения или мимики. Даже небольшая ошибка в положении точки заметно влияет на итоговые пропорции и баллы.": "Тому що це досить неточний інструмент. Автоматичний аналіз може неправильно визначити ключові точки обличчя через ракурс, перспективні спотворення камери, освітлення або міміку. Навіть невелика похибка помітно впливає на підсумкові пропорції та бали.",
                 "Поэтому замеры здесь выполняются вручную: так проще проверить каждую точку и исправить неточность. Для более надёжного результата используйте фото без искажений и внимательно следуйте схемам во вкладке «Как измерять».": "Тому тут вимірювання виконуються вручну: так легше перевірити кожну точку й виправити похибку. Для надійнішого результату використовуйте неспотворене фото та дотримуйтеся схем у вкладці «Як вимірювати».",
@@ -3249,102 +3319,95 @@
                 { name: "Brent Rivera", score: 6.03, photo: 30 }
             ],
             women: [
-                { name: "Anja Winkelmann", score: 9.38, photo: 1 },
-                { name: "Brooke Shields", score: 9.13, photo: 2 },
-                { name: "Adriana Lima", score: 8.89, photo: 3 },
-                { name: "Juliana Herz", score: 8.79, photo: 4 },
-                { name: "Doutzen Kroes", score: 8.78, photo: 5 },
-                { name: "Megan Fox", score: 8.64, photo: 7 },
-                { name: "Valeria Mazza", score: 8.58, photo: 8 },
-                { name: "Snejana Onopka", score: 8.43, photo: 9 },
-                { name: "Angelina Jolie", score: 8.32, photo: 10 },
-                { name: "Gio Scotti", score: 8.28, photo: 11 },
-                { name: "Hilary Rhoda", score: 8.04, photo: 12 },
-                { name: "Taylor Hill", score: 7.68, photo: 13 },
-                { name: "Anne Hathaway", score: 7.21, photo: 14 },
-                { name: "Mari Lederman", score: 7.18, photo: 15 },
-                { name: "Frieda Pinto", score: 7.16, photo: 6 },
-                { name: "Lana Rhoades", score: 6.87, photo: 16 },
-                { name: "Madison Beer", score: 6.45, photo: 17 },
-                { name: "Inde Navarrette", score: 5.68, photo: 18 }
+                { name: "Anja Winkelmann", score: 9.28, photo: 1 },
+                { name: "Brooke Shields", score: 9.03, photo: 2 },
+                { name: "Adriana Lima", score: 8.79, photo: 3 },
+                { name: "Juliana Herz", score: 8.69, photo: 4 },
+                { name: "Doutzen Kroes", score: 8.68, photo: 5 },
+                { name: "Megan Fox", score: 8.54, photo: 7 },
+                { name: "Valeria Mazza", score: 8.48, photo: 8 },
+                { name: "Snejana Onopka", score: 8.33, photo: 9 },
+                { name: "Angelina Jolie", score: 8.22, photo: 10 },
+                { name: "Gio Scotti", score: 8.18, photo: 11 },
+                { name: "Taylor Hill", score: 7.58, photo: 13 },
+                { name: "Anne Hathaway", score: 7.11, photo: 14 },
+                { name: "Mari Lederman", score: 7.08, photo: 15 },
+                { name: "Hilary Rhoda", score: 7.06, photo: 12 },
+                { name: "Frieda Pinto", score: 7.00, photo: 6 },
+                { name: "Lana Rhoades", score: 6.77, photo: 16 },
+                { name: "Inde Navarrette", score: 5.87, photo: 18 },
+                { name: "Madison Beer", score: 5.68, photo: 17 }
             ]
         };
         const angularityParameters = [
             {
                 id: 301,
                 group: "Костные контуры",
-                name: "Челюсть спереди",
-                scores: [26.26, 19.37, 9.82, 7.43, 3.23, 2.78, 2.12],
-                ideal: "Нижняя челюсть широкая и чётко очерчена спереди."
+                name: "Видимость мандибулы (анфас)",
+                scores: [24.75, 18.25, 9.25, 7, 3.05, 2.62, 2],
+                ideal: "Широкая нижняя челюсть, чёткий контур, отсутствие жира в нижней части лица."
             },
             {
                 id: 302,
                 group: "Костные контуры",
-                name: "Объёмность лица",
-                scores: [19.90, 14.86, 7.48, 5.61, 2.80, 2.12, 1.06],
-                ideal: "Лицо выглядит объёмным, средняя часть заметно выступает вперёд."
+                name: "3D-шность лица",
+                scores: [18.75, 14, 7.05, 5.28, 2.64, 2, 1],
+                ideal: "Сильная проекция средней части лица вперёд, выраженная выпуклость передней части, хорошая поддержка орбитальной зоны (инфраорбиталис)."
             },
             {
                 id: 303,
                 group: "Костные контуры",
-                name: "Угол челюсти",
-                scores: [19.90, 14.86, 7.48, 5.61, 2.80, 2.12, 1.06],
-                ideal: "Угол челюсти чётко виден сбоку."
+                name: "Форма и острота гонионов",
+                scores: [18.75, 14, 7.05, 5.28, 2.64, 2, 1],
+                ideal: "Чётко очерченный угол нижней челюсти, видимый край."
             },
             {
                 id: 304,
                 group: "Костные контуры",
-                name: "Верхняя челюсть в профиль",
-                scores: [18.31, 13.73, 6.85, 5.15, 2.56, 1.91, 1.06],
-                ideal: "Верхняя челюсть заметно выступает вперёд в профиль."
+                name: "Глубина лица",
+                scores: [17.25, 12.93, 6.46, 4.85, 2.42, 1.8, 1],
+                ideal: "Сильная проекция верхней (максилла) и нижней челюсти."
             },
             {
                 id: 305,
                 group: "Костные контуры",
                 name: "Видимость мандибулы и ramus",
-                scores: [17.78, 13.27, 6.63, 5.00, 2.49, 1.86, 0.85],
+                scores: [16.75, 12.5, 6.25, 4.71, 2.35, 1.75, 0.8],
                 ideal: "Длинная, высокая ветвь челюсти (ramus), чёткий контур задней части челюсти, который хорошо виден спереди."
             },
             {
                 id: 306,
                 group: "Костные контуры",
-                name: "Ogee Curve (3/4)",
-                scores: [16.72, 12.53, 6.26, 4.69, 2.28, 1.75, 0.88],
-                ideal: "Переход от скулы к щеке чётко очерчен."
+                name: "Ogee Curve",
+                scores: [15.75, 11.8, 5.9, 4.42, 2.15, 1.65, 0.83],
+                ideal: "Чётко выраженный изгиб средней части лица, выраженный выступ скул."
             },
             {
                 id: 307,
                 group: "Костные контуры",
                 name: "Видимость скул",
-                scores: [16.21, 12.02, 5.84, 4.49, 2.25, 1.68, 0.84],
-                ideal: "Высокие, широко расставленные скуловые кости, сильная латеральная (боковая) проекция, чёткая линия тени (так называемые впалые щёки)."
+                scores: [15.27, 11.33, 5.5, 4.23, 2.12, 1.59, 0.79],
+                ideal: "Высокие, широко расставленные скулы, выраженный боковой выступ, резкая линия тени (так называемые впалые щёки)."
             },
             {
                 id: 308,
                 group: "Костные контуры",
                 name: "Угловатость подбородка",
-                scores: [13.06, 9.78, 4.77, 3.66, 1.82, 1.37, 0.68],
+                scores: [15, 11.24, 5.49, 4.21, 2.1, 1.57, 0.78],
                 ideal: "Квадратная форма подбородка, чётко очерченный погонион (самая передняя точка подбородка), низкая выпуклость."
-            },
-            {
-                id: 310,
-                group: "Костные контуры",
-                name: "Надбровные дуги",
-                scores: [15.93, 11.78, 6.05, 4.46, 2.23, 1.59, 0.95],
-                ideal: "Выступ над глазами хорошо заметен."
             },
             {
                 id: 318,
                 group: "Костные контуры",
                 name: "Височная линия",
-                scores: [14.86, 11.00, 5.65, 4.16, 2.08, 1.49, 0.89],
+                scores: [12.3, 9.11, 4.68, 3.44, 1.72, 1.23, 0.74],
                 ideal: "Височная линия заметно выражена над виском."
             },
             {
                 id: 309,
                 name: "Жир в нижней и средней частях лица",
-                scores: [11.07, 8.30, 4.14, 3.11, 1.55, 1.17, 0.59],
-                ideal: "В щеках и нижней части лица жировая прослойка небольшая, контуры челюсти хорошо видны."
+                scores: [10.43, 7.82, 3.9, 2.93, 1.46, 1.1, 0.55],
+                ideal: "Минимальное количество комков Биша (щёчного жира), хороший контур челюсти."
             }
         ];
         const angularityBenchmarkData = {
@@ -3387,24 +3450,24 @@
                 { name: "Adam Driver", score: 5.27, photo: 36 }
             ],
             women: [
-                { name: "Anja Winkelmann", score: 9.53, photo: 1 },
-                { name: "Hilary Rhoda", score: 9.16, photo: 2 },
-                { name: "Snejana Onopka", score: 9.04, photo: 3 },
-                { name: "Doutzen Kroes", score: 8.61, photo: 4 },
-                { name: "Frieda Pinto", score: 8.53, photo: 5 },
-                { name: "Megan Fox", score: 8.50, photo: 6 },
-                { name: "Brooke Shields", score: 8.47, photo: 7 },
-                { name: "Valeria Mazza", score: 8.37, photo: 8 },
-                { name: "Adriana Lima", score: 8.33, photo: 9 },
-                { name: "Gio Scotti", score: 8.03, photo: 10 },
-                { name: "Mari Lederman", score: 7.76, photo: 11 },
-                { name: "Juliana Herz", score: 7.71, photo: 12 },
-                { name: "Anne Hathaway", score: 7.54, photo: 13 },
-                { name: "Taylor Hill", score: 7.38, photo: 14 },
-                { name: "Lana Rhoades", score: 7.12, photo: 15 },
-                { name: "Inde Navarrette", score: 6.78, photo: 16 },
-                { name: "Madison Beer", score: 6.64, photo: 17 },
-                { name: "Emma Watson", score: 6.21, photo: 18 }
+                { name: "Anja Winkelmann", score: 9.04, photo: 1 },
+                { name: "Hilary Rhoda", score: 8.93, photo: 2 },
+                { name: "Snejana Onopka", score: 8.74, photo: 3 },
+                { name: "Doutzen Kroes", score: 8.31, photo: 4 },
+                { name: "Megan Fox", score: 8.20, photo: 6 },
+                { name: "Brooke Shields", score: 8.17, photo: 7 },
+                { name: "Valeria Mazza", score: 7.87, photo: 8 },
+                { name: "Adriana Lima", score: 7.83, photo: 9 },
+                { name: "Gio Scotti", score: 7.43, photo: 10 },
+                { name: "Mari Lederman", score: 7.38, photo: 11 },
+                { name: "Juliana Herz", score: 7.11, photo: 12 },
+                { name: "Anne Hathaway", score: 6.94, photo: 13 },
+                { name: "Taylor Hill", score: 6.78, photo: 14 },
+                { name: "Frieda Pinto", score: 6.70, photo: 5 },
+                { name: "Lana Rhoades", score: 6.52, photo: 15 },
+                { name: "Emma Watson", score: 6.02, photo: 18 },
+                { name: "Inde Navarrette", score: 5.83, photo: 16 },
+                { name: "Madison Beer", score: 5.78, photo: 17 }
             ]
         };
         const dimorphismParameters = [
@@ -3434,8 +3497,8 @@
                 { name: "Tyler Maher", score: 8.94, photo: 6 },
                 { name: "Jon Kortajarena", score: 8.91, photo: 12 },
                 { name: "Rodrigo Guirao", score: 8.68, photo: 7 },
+                { name: "Vasiliy Stepanov", score: 8.66, photo: 9 },
                 { name: "Cameron Alborzian", score: 8.64, photo: 8 },
-                { name: "Vasiliy Stepanov", score: 8.61, photo: 9 },
                 { name: "Tom Cruise", score: 8.58, photo: 10 },
                 { name: "Salludon", score: 8.56, photo: 11 },
                 { name: "Ian Somerhalder", score: 8.55, photo: 13 },
@@ -3465,19 +3528,19 @@
             ],
             women: [
                 { name: "Doutzen Kroes", score: 9.04, photo: 1 },
+                { name: "Brooke Shields", score: 8.97, photo: 4 },
                 { name: "Juliana Herz", score: 8.94, photo: 2 },
                 { name: "Adriana Lima", score: 8.89, photo: 3 },
-                { name: "Brooke Shields", score: 8.64, photo: 4 },
-                { name: "Frieda Pinto", score: 8.51, photo: 5 },
                 { name: "Mari Lederman", score: 8.44, photo: 6 },
                 { name: "Taylor Hill", score: 8.38, photo: 7 },
                 { name: "Gio Scotti", score: 8.04, photo: 8 },
                 { name: "Megan Fox", score: 8.03, photo: 9 },
-                { name: "Valeria Mazza", score: 7.91, photo: 10 },
-                { name: "Snejana Onopka", score: 7.58, photo: 11 },
-                { name: "Anne Hathaway", score: 7.38, photo: 12 },
+                { name: "Snejana Onopka", score: 7.73, photo: 11 },
+                { name: "Anne Hathaway", score: 7.54, photo: 12 },
+                { name: "Valeria Mazza", score: 7.43, photo: 10 },
                 { name: "Lana Rhoades", score: 7.12, photo: 13 },
-                { name: "Anja Winkelmann", score: 6.94, photo: 14 },
+                { name: "Anja Winkelmann", score: 7.09, photo: 14 },
+                { name: "Frieda Pinto", score: 7.06, photo: 5 },
                 { name: "Emma Watson", score: 6.83, photo: 16 },
                 { name: "Madison Beer", score: 6.08, photo: 15 },
                 { name: "Inde Navarrette", score: 5.82, photo: 18 },
@@ -3750,7 +3813,7 @@
             { id: 102, name: "2. Nasofrontal Angle", genderDependent: true,
                 labelsMale: ["106° - 130°","101° - 105.9° ; 130.1° - 135°","97° - 101° ; 136° - 139°","94° - 97° ; 139° - 142°","91° - 94° ; 142° - 145°","88° - 91° ; 145° - 148°","<88° ; >148°"],
                 labelsFemale: ["118° - 137°","113° - 117.9° ; 137.1° - 142°","109° - 113° ; 143° - 146°","106° - 109° ; 146° - 149°","103° - 106° ; 149° - 152°","100° - 103° ; 152° - 155°","<100° ; >155°"],
-                scores: [11.25, 6.18, 3.37, 2, -3.37, -6.18, -11.25] },
+                scores: [13.25, 7.28, 3.97, 2.36, -3.97, -7.28, -13.25] },
             { id: 103, name: "3. Mandibular Plane Angle", genderDependent: true,
                 labelsMale: ["15 - 22°","14 - 13° ; 23-28°","13-12 ; 29-30°","11-10 ; 31-35°","<10 ; >35°",null,null],
                 labelsFemale: ["15 - 23°","14 ; 24 - 28°","13-12 ; 29-30°","11-10 ; 31-35°","<10 ; >35°",null,null],
@@ -3821,16 +3884,16 @@
                 scores: [4, 2.2, 1.1, 0.6, -1.1, -2.2, -4] },
             { id: 124, name: "24. NBSA - SNA",
                 labels: ["12° - 18°","10° - 12° ; 18° - 20°","8° - 10° ; 20° - 22°","6° - 8° ; 22° - 24°","4° - 6° ; 24° - 26°","2° - 4° ; 26° - 28°","<2° ; >28°"],
-                scores: [5.47, 3, 1.64, 0.82, -1.64, -3, -5.47] },
+                scores: [3.77, 2.07, 1.13, 0.57, -1.13, -2.07, -3.77] },
             { id: 125, name: "25. Lower Third Proportion",
                 labels: ["0.43 - 0.56","0.43 - 0.395 ; 0.56 - 0.595","0.395 - 0.36 ; 0.595 - 0.63","0.36 - 0.325 ; 0.63 - 0.665","0.325 - 0.29 ; 0.665 - 0.7","0.29 - 0.255 ; 0.7 - 0.735","<0.255 ; >0.0735"],
-                scores: [5.39, 2.9, 1.61, 0.8, -1.61, -2.9, -5.39] },
+                scores: [3.20, 1.73, 0.95, 0.48, -0.95, -1.73, -3.20] },
             { id: 126, name: "26. Maxilla Projection Ratio",
                 labels: ["0.6+","0.54 - 0.6","0.54 - 0.48","0.48 - 0.42","0.42 - 0.36","0.36 - 0.3","<0.3"],
-                scores: [6, 3.3, 1.65, 0.8, -1.65, -3.3, -6] },
+                scores: [4, 2.2, 1.1, 0.53, -1.1, -2.2, -4] },
             { id: 127, name: "27. Facial Depth Ratio",
                 labels: ["1.3+","1.24 - 1.3","1.18 - 1.24","1.12 - 1.18","1.06 - 1.12","1 - 1.06","<1"],
-                scores: [5.27, 2.89, 1.44, 0.72, -1.44, -2.89, -5.27] }
+                scores: [4.16, 2.28, 1.14, 0.57, -1.14, -2.28, -4.16] }
         ];
 
         const featureParameters = [
@@ -3887,7 +3950,7 @@
             { id: 245, category: "Волосы", name: "Ресницы", scores: [4.5, 2.25, 1.13, -0.31, -1.13, -3.25, null], ideal: "Густые, тёмные", worst: "Редкие, светлые" },
             { id: 246, category: "Волосы", name: "Густота и цвет бровей", scores: [25, 12.5, 6.25, 3.13, 1.56, -4.25, -11.34], ideal: "Густые, тёмные", worst: "Редкие, светлые" },
 
-            { id: 247, category: "Прочее", name: "Общий контраст лица", scores: [35, 17.5, 8.75, 4.37, -5.25, -19.25, -40], ideal: "Высокий контраст", worst: "Практически отсутствующий" }
+            { id: 247, category: "Прочее", name: "Общий контраст лица", scores: [35, 13.13, 4.37, -12.25, -40], ideal: "Высокий контраст", worst: "Практически отсутствующий" }
         ];
 
         const featureCategories = ["Симметрия", "Зона глаз", "Нос", "Область рта", "Уши", "Кожа", "Волосы", "Прочее"];
@@ -4184,15 +4247,22 @@
 
             const harmony = values.front * 0.6 + values.profile * 0.4;
             document.getElementById('overallHarmonyScore').textContent = `${harmony.toFixed(2)} / 10`;
-            const harmonyContribution = harmony * 0.32;
-            const featuresContribution = values.features * 0.26;
-            const angularityContribution = values.angularity * 0.22;
-            const dimorphismContribution = values.dimorphism * 0.2;
+            const weights = currentGender === 'female'
+                ? { harmony: 0.32, features: 0.26, angularity: 0.19, dimorphism: 0.23 }
+                : { harmony: 0.32, features: 0.26, angularity: 0.22, dimorphism: 0.20 };
+            const harmonyContribution = harmony * weights.harmony;
+            const featuresContribution = values.features * weights.features;
+            const angularityContribution = values.angularity * weights.angularity;
+            const dimorphismContribution = values.dimorphism * weights.dimorphism;
             const weightedScore = harmonyContribution + featuresContribution + angularityContribution + dimorphismContribution;
-            const weightedDeviation = 0.32 * Math.abs(harmony - weightedScore)
-                + 0.26 * Math.abs(values.features - weightedScore)
-                + 0.22 * Math.abs(values.angularity - weightedScore)
-                + 0.2 * Math.abs(values.dimorphism - weightedScore);
+            const weightedDeviation = weights.harmony * Math.abs(harmony - weightedScore)
+                + weights.features * Math.abs(values.features - weightedScore)
+                + weights.angularity * Math.abs(values.angularity - weightedScore)
+                + weights.dimorphism * Math.abs(values.dimorphism - weightedScore);
+            document.getElementById('overallAngularityInputWeight').textContent = `${weights.angularity * 100}%`;
+            document.getElementById('overallAngularityBreakdownWeight').textContent = `${weights.angularity * 100}%`;
+            document.getElementById('overallDimorphismInputWeight').textContent = `${weights.dimorphism * 100}%`;
+            document.getElementById('overallDimorphismBreakdownWeight').textContent = `${weights.dimorphism * 100}%`;
             const imbalancePenalty = weightedDeviation >= 0.5 ? weightedDeviation * 0.5 : 0;
             const total = weightedScore - imbalancePenalty;
 
@@ -4675,7 +4745,8 @@
                 container.appendChild(card);
             });
 
-            const finalScore = totalPoints / 19;
+            const maxPoints = profileParameters.reduce((total, parameter) => total + parameter.scores[0], 0);
+            const finalScore = totalPoints / (maxPoints / 10);
             document.getElementById('profileTotalPoints').innerText = totalPoints.toFixed(2);
             document.getElementById('profileFinalScore').innerText = finalScore.toFixed(2);
             document.getElementById('profileFinalScore').dataset.exactScore = String(finalScore);
@@ -4886,7 +4957,7 @@
             const container = document.getElementById('angularityParamsContainer');
             container.innerHTML = '';
             let totalPoints = 0;
-            const maxPoints = Math.round(angularityParameters.reduce((total, parameter) => total + parameter.scores[0], 0) * 100) / 100;
+            const maxPoints = angularityParameters.reduce((total, parameter) => total + parameter.scores[0], 0);
 
             angularityParameters.forEach(parameter => {
                 const tierIndex = selectedAngularityTiers[parameter.id];
@@ -4926,7 +4997,6 @@
 
             const finalScore = totalPoints / (maxPoints / 10);
             document.getElementById('angularityTotalPoints').innerText = totalPoints.toFixed(2);
-            document.getElementById('angularityMaxPoints').innerText = maxPoints.toFixed(0);
             document.getElementById('angularityFinalScore').innerText = finalScore.toFixed(2);
             document.getElementById('angularityFinalScore').dataset.exactScore = String(finalScore);
             updateOverallScore();
@@ -5189,7 +5259,7 @@
                     ? "profile-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-red-600 text-white"
                     : "profile-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition bg-slate-900/80 hover:bg-slate-800 text-slate-300 border border-slate-800";
             });
-            showToast("Значения профиля сброшены");
+            showToast("Значения сброшены");
             renderProfile();
         };
 
