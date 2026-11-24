@@ -955,7 +955,7 @@
                                 <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">Челюсть спереди:</span> более округлые, мягкие и плоские очертания.</li>
                                 <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">Скулы:</span> наружная скуловая кость приближается к высоте нижних век.</li>
                                 <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">Соотношение носа и рта:</span> более узкий нос; отношение рта к носу около 1,5–1,7.</li>
-                                <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">TFWHR:</span> меньшая высота и ширина лица; ориентир соотношения — 1,3.</li>
+                                <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">tFWHR:</span> меньшая высота и ширина лица; ориентир соотношения — 1,3.</li>
                                 <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">Соотношение губ (UL:LL):</span> более полные губы; верхняя губа примерно в 1,4 раза меньше нижней.</li>
                                 <li class="glass-card rounded-xl p-3"><span class="font-semibold text-white">Midface Ratio:</span> центральная часть лица более компактная.</li>
                                 <li class="glass-card rounded-xl p-3 md:col-span-2"><span class="font-semibold text-white">ESR:</span> более широко посаженные глаза считаются более женственной чертой.</li>
@@ -1997,7 +1997,7 @@
                 "Брови": "Eyebrows",
                 "Шея": "Neck",
                 "Лицевые трети": "Facial thirds",
-                "Соотношение ширины и высоты лица (TFWHR)": "Facial width-to-height ratio (TFWHR)",
+                "Соотношение ширины и высоты лица (tFWHR)": "Facial width-to-height ratio (tFWHR)",
                 "Гониальный угол": "Gonial angle",
                 "Глазной аспект": "Eye aspect ratio",
                 "Подбородок (Chin)": "Chin",
@@ -2614,7 +2614,7 @@
                 "Брови": "Брови",
                 "Шея": "Шия",
                 "Лицевые трети": "Третини обличчя",
-                "Соотношение ширины и высоты лица (TFWHR)": "Співвідношення ширини й висоти обличчя (TFWHR)",
+                "Соотношение ширины и высоты лица (tFWHR)": "Співвідношення ширини й висоти обличчя (tFWHR)",
                 "Гониальный угол": "Гоніальний кут",
                 "Глазной аспект": "Співвідношення сторін ока",
                 "Подбородок (Chin)": "Підборіддя",
@@ -3165,16 +3165,16 @@
                 '9. JFA –',
                 '10. IAA:JFA –',
                 '11. Bigonial Width –',
-                '12. Facial Thirds –',
-                '13. Facial Fifths –',
-                '14. FWHR –',
-                '15. TFWHR –',
-                '16. Midface Ratio –',
-                '17. Nose to Bizygo –',
-                '18. Nose H:W –',
-                '19. Nose : ICD –',
-                '20. LL:UL –',
-                '21. Chin to Philtrum –',
+                '12. FWHR –',
+                '13. tFWHR –',
+                '14. Midface Ratio –',
+                '15. Nose to Bizygo –',
+                '16. Nose H:W –',
+                '17. Nose : ICD –',
+                '18. LL:UL –',
+                '19. Chin to Philtrum –',
+                '20. Facial Thirds –',
+                '21. Facial Fifths –',
                 '22. Mouth to Bigonial –',
                 '23. Mouth to Nose –',
                 '24. Mouth : Chin –',
@@ -3421,7 +3421,7 @@
             { id: 404, name: "Брови", idealMale: "Густые, толстые, низко посаженные", idealFemale: "Тонкие, высоко посаженные, с наклоном около 11–19°", scores: [10, 5, 2.5, 1.25, 0.5] },
             { id: 405, name: "Шея", idealMale: "Широкая: 90% и более", idealFemale: "Пропорциональная: около 80%", scores: [10, 5, 2.5, 1.25, 0.5] },
             { id: 406, name: "Лицевые трети", idealMale: "Нижняя доминирует, ≥35%", idealFemale: "Средняя доминирует: 34–35%", scores: [10, 5, 2.5, 1.25, 0.5] },
-            { id: 407, name: "Соотношение ширины и высоты лица (TFWHR)", idealMale: "Более вытянутое", idealFemale: "Более короткое", scores: [10, 5, 2.5, 1.25, 0.5] },
+            { id: 407, name: "Соотношение ширины и высоты лица (tFWHR)", idealMale: "Более вытянутое", idealFemale: "Более короткое", scores: [10, 5, 2.5, 1.25, 0.5] },
             { id: 408, name: "Гониальный угол", idealMale: "Острый: ~110–115°", idealFemale: "Немного тупой: ~125–130°", scores: [10, 5, 2.5, 1.25, 0.5] },
             { id: 409, name: "Глазной аспект", idealMale: "Более узкие, глубоко посаженные и менее открытые глаза", idealFemale: "Округлые, более открытые глаза", scores: [10, 5, 2.5, 1.25, 0.5] },
             { id: 410, name: "Подбородок (Chin)", idealMale: "Квадратный", idealFemale: "Округлый или заострённый", scores: [10, 5, 2.5, 1.25, 0.5] },
@@ -3595,60 +3595,60 @@
                 scores: [12.5, 8.5, 4.25, 2.12, -4.25, -8.5, -12.5] 
             },
             { 
-                id: 11, name: "12. Facial Thirds", category: "face", 
-                genderDependent: true,
-                labelsMale: ["30 - 34% (U) | 32 - 36% (M) | 32 - 38% (L)","29 - 30 ; 34 - 35 (U) | 31 - 32 ; 36 - 37 (M) | 31 - 32 ; 38 - 39 (L)","28 - 29 ; 35 - 36 (U) | 30 - 31 ; 37 - 38 (M) | 30 - 31 ; 39 - 40 (L)","27 - 28 ; 36 - 37 (U) | 29 - 30 ; 38 - 39 (M) | 29 - 30 ; 40 - 41 (L)","26 - 27 ; 37 - 38 (U) | 28 - 29 ; 39 - 40 (M) | 28 - 29 ; 41 - 42 (L)","25 - 26 ; 38 - 39 (U) | 27 - 28 ; 40 - 41 (M) | 27 - 28 ; 42 - 43 (L)","<25 ; >39 (U) | <27 ; >41 / 43 (M) | <27 ; 43 (L)"],
-                labelsFemale: ["30 - 34% (U) | 32 - 34% (M) | 30 - 33% (L)","29 - 30 ; 34 - 35 (U) | 31 - 32 ; 34 - 35 (M) | 29 - 30 ; 33 - 34 (L)","28 - 29 ; 35 - 36 (U) | 30 - 31 ; 35 - 36 (M) | 28 - 29 ; 34 - 35 (L)","27 - 28 ; 36 - 37 (U) | 29 - 30 ; 36 - 37 (M) | 27 - 28 ; 35 - 36 (L)","26 - 27 ; 37 - 38 (U) | 28 - 29 ; 37 - 38 (M) | 26 - 27 ; 36 - 37 (L)","25 - 26 ; 38 - 39 (U) | 27 - 28 ; 38 - 39 (M) | 25 - 26 ; 37 - 38 (L)","<25 ; >39 (U) | <27 ; >39 (M) | <25 ; >37 (L)"],
-                scores: [13, 8.84, 4.42, 2.21, -4.42, -8.84, -13] 
-            },
-            { 
-                id: 12, name: "13. Facial Fifths", category: "face", 
-                labels: ["1 и 5: 20 - 25%                  | 2, 3, 4: 17 - 22%","1 и 5: 19 - 20% ; 25 - 26% | 2, 3, 4: 16 - 17% ; 22 - 23%","1 и 5: 18 - 19% ; 26 - 27% | 2, 3, 4: 15 - 16% ; 23 - 24%","1 и 5: 17 - 18% ; 27 - 28% | 2, 3, 4: 14 - 15% ; 24 - 25%","1 и 5: 16 - 17% ; 28 - 29% | 2, 3, 4: 13 - 14% ; 25 - 26%","1 и 5: 15 - 16% ; 29 - 30% | 2, 3, 4: 12 - 13% ; 26 - 27%","1 и 5: <15 ; >30                 | 2, 3, 4: <12 ; >27"], 
-                scores: [4, 2.72, 1.36, 0.68, -1.36, -2.72, -4] 
-            },
-            { 
-                id: 13, name: "14. FWHR", category: "face", 
+                id: 13, name: "12. FWHR", category: "face", 
                 labels: ["1.9 - 2.06","1.85 - 1.9 ; 2.06 - 2.11","1.8 - 1.85 ; 2.11 - 2.16","1.75 - 1.8 ; 2.16 - 2.21","1.7 - 1.75 ; 2.21 - 2.26","1.65 - 1.7 ; 2.26 - 2.31","<1.65 ; >2.31"], 
                 scores: [15, 10.2, 5.1, 2.55, -5.1, -10.2, -15] 
             },
             { 
-                id: 14, name: "15. TFWHR", category: "face", 
+                id: 14, name: "13. tFWHR", category: "face", 
                 genderDependent: true,
                 labelsMale: ["1.33 - 1.38","1.30 - 1.32 ; 1.39 - 1.41","1.27 - 1.30 ; 1.41 - 1.44","1.24 - 1.27 ; 1.44 - 1.47","1.21 - 1.24 ; 1.47 - 1.50","1.18 - 1.21 ; 1.50 - 1.53","<1.18 ; >1.53"],
                 labelsFemale: ["1.29 - 1.33","1.26 - 1.28 ; 1.34 - 1.36","1.23 - 1.26 ; 1.36 - 1.39","1.20 - 1.23 ; 1.39 - 1.42","1.17 - 1.20 ; 1.42 - 1.45","1.14 - 1.17 ; 1.45 - 1.48","<1.14 ; >1.48"],
                 scores: [11.25, 7.65, 3.82, 1.91, -3.82, -7.65, -11.25] 
             },
             { 
-                id: 16, name: "16. Midface Ratio", category: "nose", 
+                id: 16, name: "14. Midface Ratio", category: "nose", 
                 labels: ["0.97 - 1.05","0.94 - 0.97 ; 1.05 - 1.08","0.91 - 0.94 ; 1.08 - 1.11","0.88 - 0.91 ; 1.11 - 1.14","0.85 - 0.88 ; 1.14 - 1.17","0.82 - 0.85 ; 1.17 - 1.2","<0.82 ; >1.2"], 
                 scores: [12, 8.16, 4.08, 2.04, -4.08, -8.16, -12] 
             },
             { 
-                id: 17, name: "17. Nose to Bizygo", category: "nose", 
+                id: 17, name: "15. Nose to Bizygo", category: "nose", 
                 labels: ["0.245 - 0.275","0.235 - 0.245 ; 0.275 - 0.285","0.225 - 0.235 ; 0.285 - 0.295","0.215 - 0.225 ; 0.295 - 0.305","0.205 - 0.215 ; 0.305 - 0.315","0.195 - 0.205 ; 0.315 - 0.325","<0.195 ; >0.325"], 
                 scores: [7.25, 4.93, 2.46, 1.23, -2.46, -4.93, -7.25] 
             },
             { 
-                id: 18, name: "18. Nose H:W", category: "nose", 
+                id: 18, name: "16. Nose H:W", category: "nose", 
                 labels: ["1.4 - 1.55","1.35 - 1.4 ; 1.55 - 1.6","1.3 - 1.35 ; 1.6 - 1.65","1.25 - 1.3 ; 1.65 - 1.7","1.2 - 1.25 ; 1.7 - 1.75","1.15 - 1.2 ; 1.75 - 1.8","<1.15 ; >1.8"], 
                 scores: [8.5, 5.78, 2.89, 1.44, -2.89, -5.78, -8.5] 
             },
             { 
-                id: 33, name: "19. Nose : ICD", category: "nose", 
+                id: 33, name: "17. Nose : ICD", category: "nose", 
                 labels: ["0.97 - 1.1","0.92 - 0.97 ; 1.1 - 1.15","0.87 - 0.92 ; 1.15 - 1.2","0.82 - 0.87 ; 1.2 - 1.25","0.77 - 0.82 ; 1.25 - 1.3","0.72 - 0.77 ; 1.3 - 1.35","<0.72 ; >1.35"], 
                 scores: [7, 4.76, 2.38, 1.19, -2.38, -4.76, -7] 
             },
             { 
-                id: 19, name: "20. LL:UL", category: "nose", 
+                id: 19, name: "18. LL:UL", category: "nose", 
                 labels: ["1.4 - 1.8","1.3 - 1.4 ; 1.8 - 1.9","1.2 - 1.3 ; 1.9 - 2","1.1 - 1.2 ; 2 - 2.1","1 - 1.1 ; 2.1 - 2.2","0.9 - 1 ; 2.2 - 2.3","<0.26 ; >0.6"], 
                 scores: [7, 4.76, 2.38, 1.19, -2.38, -4.76, -7] 
             },
             { 
-                id: 20, name: "21. Chin to Philtrum", category: "jaw", 
+                id: 20, name: "19. Chin to Philtrum", category: "jaw", 
                 genderDependent: true,
                 labelsMale: ["2.05 - 2.55","1.95 - 2.04 ; 2.56 - 2.65","1.85 - 1.95 ; 2.65 - 2.75","1.75 - 1.85 ; 2.75 - 2.85","1.65 - 1.75 ; 2.85 - 2.95","1.55 - 1.65 ; 2.95 - 3.05","<1.55 ; >3.05"],
                 labelsFemale: ["2.0 - 2.5","1.90 - 1.99 ; 2.51 - 2.60","1.80 - 1.90 ; 2.60 - 2.70","1.70 - 1.80 ; 2.70 - 2.80","1.60 - 1.70 ; 2.80 - 2.90","1.50 - 1.60 ; 2.90 - 3.00","<1.50 ; >3.00"],
                 scores: [10, 6.8, 3.4, 1.7, -3.4, -6.8, -10] 
+            },
+            { 
+                id: 11, name: "20. Facial Thirds", category: "face", 
+                genderDependent: true,
+                labelsMale: ["30 - 34% (U) | 32 - 36% (M) | 32 - 38% (L)","29 - 30 ; 34 - 35 (U) | 31 - 32 ; 36 - 37 (M) | 31 - 32 ; 38 - 39 (L)","28 - 29 ; 35 - 36 (U) | 30 - 31 ; 37 - 38 (M) | 30 - 31 ; 39 - 40 (L)","27 - 28 ; 36 - 37 (U) | 29 - 30 ; 38 - 39 (M) | 29 - 30 ; 40 - 41 (L)","26 - 27 ; 37 - 38 (U) | 28 - 29 ; 39 - 40 (M) | 28 - 29 ; 41 - 42 (L)","25 - 26 ; 38 - 39 (U) | 27 - 28 ; 40 - 41 (M) | 27 - 28 ; 42 - 43 (L)","<25 ; >39 (U) | <27 ; >41 / 43 (M) | <27 ; 43 (L)"],
+                labelsFemale: ["30 - 34% (U) | 32 - 34% (M) | 30 - 33% (L)","29 - 30 ; 34 - 35 (U) | 31 - 32 ; 34 - 35 (M) | 29 - 30 ; 33 - 34 (L)","28 - 29 ; 35 - 36 (U) | 30 - 31 ; 35 - 36 (M) | 28 - 29 ; 34 - 35 (L)","27 - 28 ; 36 - 37 (U) | 29 - 30 ; 36 - 37 (M) | 27 - 28 ; 35 - 36 (L)","26 - 27 ; 37 - 38 (U) | 28 - 29 ; 37 - 38 (M) | 26 - 27 ; 36 - 37 (L)","25 - 26 ; 38 - 39 (U) | 27 - 28 ; 38 - 39 (M) | 25 - 26 ; 37 - 38 (L)","<25 ; >39 (U) | <27 ; >39 (M) | <25 ; >37 (L)"],
+                scores: [13, 8.84, 4.42, 2.21, -4.42, -8.84, -13] 
+            },
+            { 
+                id: 12, name: "21. Facial Fifths", category: "face", 
+                labels: ["1 и 5: 20 - 25%                  | 2, 3, 4: 17 - 22%","1 и 5: 19 - 20% ; 25 - 26% | 2, 3, 4: 16 - 17% ; 22 - 23%","1 и 5: 18 - 19% ; 26 - 27% | 2, 3, 4: 15 - 16% ; 23 - 24%","1 и 5: 17 - 18% ; 27 - 28% | 2, 3, 4: 14 - 15% ; 24 - 25%","1 и 5: 16 - 17% ; 28 - 29% | 2, 3, 4: 13 - 14% ; 25 - 26%","1 и 5: 15 - 16% ; 29 - 30% | 2, 3, 4: 12 - 13% ; 26 - 27%","1 и 5: <15 ; >30                 | 2, 3, 4: <12 ; >27"], 
+                scores: [4, 2.72, 1.36, 0.68, -1.36, -2.72, -4] 
             },
             { 
                 id: 21, name: "22. Mouth to Bigonial", category: "jaw", 
@@ -5324,6 +5324,50 @@
             target.focus();
         }
 
+        function parseNoteListValue(line, template) {
+            const label = template.trim().replace(/[–—-]\s*$/, '').trim();
+            const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const match = line.match(new RegExp(`^\\s*${escapedLabel}\\s*[–—-]\\s*(.*?)\\s*$`, 'i'));
+            return match ? match[1].trim() : null;
+        }
+
+        function syncNoteListTiers(section) {
+            if (section !== 'front' && section !== 'profile') return;
+            const target = document.getElementById(`${section}Notes`);
+            const list = noteLists[section];
+            const parameters = section === 'front' ? pdfParameters : profileParameters;
+            const tiers = section === 'front' ? selectedTiers : selectedProfileTiers;
+            let changed = false;
+
+            target.value.split(/\r?\n/).forEach(line => {
+                list.forEach((template, index) => {
+                    const rawValue = parseNoteListValue(line, template);
+                    const parameter = parameters[index];
+                    if (rawValue === null || !rawValue || !parameter || (section === 'front' && parameter.id === 15)) return;
+
+                    const labels = getMeasurementLabels(parameter, section);
+                    if (!supportsNumericMeasurement(parameter, labels)) return;
+
+                    const tierIndex = findMeasurementTier(parameter, section, rawValue);
+                    if (tierIndex === null) return;
+
+                    if (measurementInputs[section][parameter.id] !== rawValue) {
+                        measurementInputs[section][parameter.id] = rawValue;
+                        changed = true;
+                    }
+                    if (tiers[parameter.id] !== tierIndex) {
+                        tiers[parameter.id] = tierIndex;
+                        changed = true;
+                    }
+                });
+            });
+
+            if (changed) {
+                if (section === 'front') render();
+                else renderProfile();
+            }
+        }
+
         function clearNotes(section) {
             if (!['front', 'profile'].includes(section)) return;
             const target = document.getElementById(`${section}Notes`);
@@ -5397,6 +5441,7 @@
                     index: 0
                 };
                 target.addEventListener('input', () => recordNoteChange(section));
+                target.addEventListener('input', () => syncNoteListTiers(section));
                 target.addEventListener('keydown', event => {
                     if (!(event.ctrlKey || event.metaKey) || (event.key.toLowerCase() !== 'z' && event.key.toLowerCase() !== 'y')) return;
                     event.preventDefault();
@@ -5574,6 +5619,8 @@
 
         restoreAppState();
         initializeNoteHistory();
+        syncNoteListTiers('front');
+        syncNoteListTiers('profile');
         applyLanguage();
         render();
         renderProfile();
