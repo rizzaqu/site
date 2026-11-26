@@ -210,6 +210,10 @@
         .dimorphism-theme-score-border {
             border-color: color-mix(in srgb, var(--theme-accent) 40%, transparent);
         }
+        .dimorphism-info-disclosure:hover {
+            border-color: color-mix(in srgb, var(--theme-accent) 68%, transparent);
+            box-shadow: 0 0 18px color-mix(in srgb, var(--theme-accent) 24%, transparent);
+        }
         .dimorphism-theme-glow {
             background-color: color-mix(in srgb, var(--theme-accent) 20%, transparent);
         }
@@ -313,6 +317,10 @@
         .disclosure-summary:focus:not(:focus-visible) {
             outline: none !important;
             box-shadow: none !important;
+        }
+        .guide-panel-hover-glow:hover {
+            border-color: color-mix(in srgb, var(--theme-accent) 68%, transparent);
+            box-shadow: 0 0 18px color-mix(in srgb, var(--theme-accent) 24%, transparent);
         }
         @media (prefers-reduced-motion: reduce) {
             body, body *, body *::before, body *::after {
@@ -583,7 +591,7 @@
         </div>
 
         <!-- Gender Selector Bar -->
-        <div id="genderSelector" class="flex justify-center mb-8">
+        <div id="genderSelector" class="flex flex-wrap items-center justify-center gap-3 mb-8">
             <div class="glass-panel px-4 py-2 rounded-2xl flex items-center gap-4 shadow-lg border border-slate-800">
                 <span class="text-xs font-bold uppercase tracking-wider text-slate-400"><i id="genderIcon" class="fa-solid fa-venus-mars text-sky-300 mr-1.5"></i> Пол для расчета:</span>
                 <div class="flex gap-2">
@@ -595,12 +603,24 @@
                     </button>
                 </div>
             </div>
+            <div id="frontFormulaSelector" class="glass-panel rounded-2xl border border-slate-800 p-1.5 shadow-lg">
+                <div class="grid w-64 max-w-full grid-cols-2 gap-1" role="group" aria-label="Формула гармонии анфаса">
+                    <button type="button" id="frontFormulaClassicButton" onclick="setFrontFormula('classic')"
+                        aria-pressed="true" class="rounded-xl border px-3 py-2 text-xs font-bold transition">
+                        Формула №1
+                    </button>
+                    <button type="button" id="frontFormulaIdealButton" onclick="setFrontFormula('ideal')"
+                        aria-pressed="false" class="rounded-xl border px-3 py-2 text-xs font-bold transition">
+                        Формула №2
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div id="tabCalculator" class="tab-content">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-                <div class="lg:col-span-4 lg:sticky lg:top-6 space-y-6 z-30">
+                <div class="lg:col-span-4 lg:sticky lg:top-6 space-y-4 z-30">
                     <div class="gradient-border shadow-2xl">
                         <div class="gradient-border-inner p-6 sm:p-7 relative overflow-hidden">
                             <div class="absolute -right-12 -top-12 w-40 h-40 bg-sky-400/20 rounded-full blur-2xl"></div>
@@ -610,12 +630,11 @@
                                     <i class="fa-solid fa-chart-pie text-sky-300"></i> Гармония анфаса
                                 </span>
                             </div>
-
                             <div class="text-center my-6">
                                 <div class="text-5xl sm:text-6xl font-black tracking-tight text-white mb-2">
                                     <span id="finalScore" class="gradient-text">0.00</span>
                                 </div>
-                                <div class="text-xs text-slate-400">Сумма баллов: <span id="totalPoints" class="text-sky-200 font-semibold">0.00</span></div>
+                                <div id="frontTotalLabel" class="text-xs text-slate-400">Сумма баллов: <span id="totalPoints" class="text-sky-200 font-semibold">0.00</span></div>
                             </div>
                             <div class="mb-5">
                                 <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
@@ -641,7 +660,8 @@
                     </div>
                 </div>
 
-                <div class="lg:col-span-8 space-y-6">
+                <div class="lg:col-span-8">
+                    <div id="frontFormulaClassicPanel" class="space-y-6">
                     <div class="glass-panel rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row gap-4 items-center justify-between">
                         <div class="relative w-full sm:w-72">
                             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
@@ -661,6 +681,18 @@
                     </div>
 
                     <div id="paramsContainer" class="space-y-4"></div>
+                    </div>
+                    <section id="frontFormulaIdealPanel" class="hidden space-y-4">
+                        <div class="glass-panel w-full sm:w-80 rounded-2xl p-2">
+                            <label class="relative block w-full">
+                                <span class="sr-only">Поиск параметра</span>
+                                <input type="search" id="frontFormulaIdealSearch" oninput="filterFrontFormulaIdeal()"
+                                    placeholder="Поиск параметра..."
+                                    class="w-full rounded-xl bg-slate-900/80 border border-slate-800 px-4 py-2.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-400 transition">
+                            </label>
+                        </div>
+                        <div id="frontFormulaIdealParams" class="grid grid-cols-1 xl:grid-cols-2 gap-4"></div>
+                    </section>
                 </div>
 
             </div>
@@ -711,7 +743,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </span>
-                            <input type="text" id="profileSearchInput" oninput="filterProfileParams()" placeholder="Поиск параметра профиля..."
+                            <input type="text" id="profileSearchInput" oninput="filterProfileParams()" placeholder="Поиск параметра..."
                                 class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-400 transition">
                         </div>
                         <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-2" id="profileCategoryFilters">
@@ -777,7 +809,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </span>
-                            <input type="text" id="featureSearchInput" oninput="filterFeatureParams()" placeholder="Поиск особенности..."
+                            <input type="text" id="featureSearchInput" oninput="filterFeatureParams()" placeholder="Поиск параметра..."
                                 class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none transition">
                         </div>
                         <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-2" id="featureCategoryFilters"></div>
@@ -912,7 +944,7 @@
                         </div>
                         <span class="text-xs leading-relaxed text-slate-500">Выберите тир по тому идеалу, который показывается.</span>
                     </div>
-                    <details class="glass-panel rounded-2xl border dimorphism-theme-score-border">
+                    <details class="glass-panel rounded-2xl border dimorphism-theme-score-border dimorphism-info-disclosure">
                         <summary class="disclosure-summary cursor-pointer list-none rounded-2xl p-4 sm:p-5 font-semibold text-white focus:outline-none">
                             <span class="inline-flex items-center gap-2">
                                 <i class="fa-solid fa-circle-info dimorphism-theme-icon" aria-hidden="true"></i>
@@ -938,7 +970,7 @@
                             </ul>
                         </div>
                     </details>
-                    <details class="glass-panel rounded-2xl border border-pink-500/30">
+                    <details class="glass-panel rounded-2xl border border-pink-500/30 dimorphism-info-disclosure">
                         <summary class="disclosure-summary cursor-pointer list-none rounded-2xl p-4 sm:p-5 font-semibold text-white focus:outline-none">
                             <span class="inline-flex items-center gap-2">
                                 <i class="fa-solid fa-circle-info text-pink-300" aria-hidden="true"></i>
@@ -1171,7 +1203,7 @@
 
             <div id="guidePanelHow" role="tabpanel" aria-labelledby="guideHowTab" class="hidden space-y-5">
                 <section class="space-y-5" aria-label="Схемы замеров анфаса и профиля">
-                    <details class="glass-panel rounded-xl group">
+                    <details class="glass-panel rounded-xl group guide-panel-hover-glow">
                         <summary class="disclosure-summary flex cursor-pointer list-none items-center justify-between gap-3 p-4 font-bold text-white focus:outline-none rounded-xl">
                             <span class="flex items-center gap-2"><i class="fa-solid fa-divide text-sky-300" aria-hidden="true"></i> Как измерять трети или пятые доли</span>
                             <i class="fa-solid fa-chevron-down text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true"></i>
@@ -1196,7 +1228,7 @@
                             </div>
                         </div>
                     </details>
-                    <div class="glass-panel rounded-2xl p-5 sm:p-6">
+                    <div class="glass-panel rounded-2xl p-5 sm:p-6 guide-panel-hover-glow">
                         <div class="mb-4">
                             <h2 class="text-xl font-bold text-white">Как измерять</h2>
                             <p class="text-sm text-slate-400 mt-1">Здесь показаны примеры того, как делать замеры.</p>
@@ -1214,9 +1246,21 @@
                                 Профиль
                             </button>
                         </div>
+                        <div id="guideFrontFormulaTabs" class="mt-3 flex flex-wrap gap-2" role="tablist" aria-label="Выбрать формулу замеров анфаса">
+                            <button id="guideFormula1Tab" type="button" role="tab" aria-selected="true"
+                                onclick="selectFrontFormulaGuide('formula1')"
+                                class="rounded-xl px-4 py-2 text-sm font-bold bg-purple-600 text-white transition">
+                                Формула №1
+                            </button>
+                            <button id="guideFormula2Tab" type="button" role="tab" aria-selected="false"
+                                onclick="selectFrontFormulaGuide('formula2')"
+                                class="rounded-xl px-4 py-2 text-sm font-bold bg-slate-900/80 text-slate-300 border border-slate-800 transition">
+                                Формула №2
+                            </button>
+                        </div>
                     </div>
-                    <div id="measurementGuideGallery" role="tabpanel" aria-labelledby="guideFrontTab"
-                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+                    <div id="measurementGuideGallery" role="tabpanel" aria-labelledby="guideFormula1Tab"
+                        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start gap-4"></div>
                 </section>
             </div>
 
@@ -1803,6 +1847,20 @@
                 "Челюсть & Подбородок": "Jaw & Chin",
                 "Общие пропорции": "Overall proportions",
                 "Баллы особенностей": "Feature scores",
+                "Формула 1": "Formula 1",
+                "Формула 2": "Formula 2",
+                "Формула №1": "Formula No. 1",
+                "Формула №2": "Formula No. 2",
+                "Формула гармонии анфаса": "Front harmony formula",
+                "Формула 2: идеальные диапазоны": "Formula 2: ideal ranges",
+                "Идеал:": "Ideal:",
+                "Измеренное значение": "Measured value",
+                "Не введено": "Not entered",
+                "Некорректное значение": "Invalid value",
+                "Тир не определён": "Tier undefined",
+                "Поиск показателя...": "Search metrics...",
+                "T1 = 10, T2 = 5, T3 = 2.5, T4 = 0, T5 = −5. T5 формулы 2 соответствует T7 формулы 1; T4 объединяет T5–T6. Для новых показателей используется ближайший аналог.": "T1 = 10, T2 = 5, T3 = 2.5, T4 = 0, T5 = −5. Formula 2 T5 corresponds to Formula 1 T7; T4 groups T5–T6. New metrics use the closest analogue.",
+                "Максимум: 420 баллов. Процент: сумма баллов ÷ 420 × 100.": "Maximum: 420 points. Percentage: total points ÷ 420 × 100.",
                 "Ориентир по баллам особенностей": "Feature score reference",
                 "Оценка особенностей": "Feature score",
                 "Примеры баллов из таблицы": "Example scores from the table",
@@ -1925,7 +1983,7 @@
                 "баллов": "points",
                 "б.": "pts.",
                 "Выбран": "Selected",
-                "Ожидает значения IAA и JFA": "Waiting for IAA and JFA values",
+                "Ожидает": "Waiting",
                 "Нужно ввести значение": "A value is required",
                 "Сначала введи обязательное значение.": "Enter the required value first.",
                 "Ручные оценки должны быть в диапазоне от 0 до 10.": "Manual scores must be between 0 and 10.",
@@ -2145,6 +2203,7 @@
                 "Потому что это довольно неточный инструмент. Автоматический анализ может неверно определить ключевые точки лица из-за ракурса, перспективных искажений камеры, освещения или мимики. Даже небольшая ошибка в положении точки заметно влияет на итоговые пропорции и баллы.": "Because it is quite an inaccurate tool. Automatic analysis can misidentify facial landmarks due to camera angle, perspective distortion, lighting, or facial expression. Even a small landmark error can noticeably affect the resulting proportions and scores.",
                 "Поэтому замеры здесь выполняются вручную: так проще проверить каждую точку и исправить неточность. Для более надёжного результата используйте фото без искажений и внимательно следуйте схемам во вкладке «Как измерять».": "Measurements are therefore done manually: it is easier to check each point and correct mistakes. For more reliable results, use an undistorted photo and follow the diagrams in the “How to measure” tab.",
                 "Здесь показаны примеры того, как делать замеры.": "Examples of how to take measurements are shown here.",
+                "Выбрать формулу замеров анфаса": "Choose a front-measurement formula",
                 "Красную линию делите на зелёную.": "Divide the red line by the green line.",
                 "Анфас": "Front view",
                 "Профиль": "Profile view",
@@ -2352,9 +2411,18 @@
                 "Разница IAA и JFA": "IAA and JFA difference",
                 "Введи значения IAA и JFA для автоподсчёта": "Enter IAA and JFA values for automatic calculation",
                 "Автоматически рассчитывается как |IAA − JFA| и выбирает тир.": "Automatically calculated as |IAA − JFA| and used to select a tier.",
+                "Ожидает значения IAA и JFA": "Waiting for IAA and JFA values",
+                "Разница BIT и BIG": "BIT and BIG difference",
+                "Введи значения BIT и BIG для автоподсчёта": "Enter BIT and BIG values for automatic calculation",
+                "Автоматически рассчитывается как |BIT − BIG| и выбирает тир.": "Automatically calculated as |BIT − BIG| and used to select a tier.",
+                "Разница CT и ET": "CT and ET difference",
+                "Введи значения CT и ET для автоподсчёта": "Enter CT and ET values for automatic calculation",
+                "Автоматически рассчитывается как |CT − ET| и выбирает тир.": "Automatically calculated as |CT − ET| and used to select a tier.",
+                "Введите значение": "Enter a value",
                 "Ввести значение": "Enter a value",
                 "(обязательно)": "(required)",
                 "Например, 0,85": "For example, 0.85",
+                "Например, 75 или 0,75": "For example, 75 or 0.75",
                 "Обязательно введи число, чтобы применить тир.": "Enter a number to apply a tier.",
                 "В единицах, указанных в шкале выше": "In the units shown in the scale above",
                 "Открыть схему замера": "Open measurement diagram",
@@ -2423,6 +2491,20 @@
                 "Челюсть & Подбородок": "Щелепа й підборіддя",
                 "Общие пропорции": "Загальні пропорції",
                 "Баллы особенностей": "Бали рис",
+                "Формула 1": "Формула 1",
+                "Формула 2": "Формула 2",
+                "Формула №1": "Формула №1",
+                "Формула №2": "Формула №2",
+                "Формула гармонии анфаса": "Формула гармонії анфасу",
+                "Формула 2: идеальные диапазоны": "Формула 2: ідеальні діапазони",
+                "Идеал:": "Ідеал:",
+                "Измеренное значение": "Виміряне значення",
+                "Не введено": "Не введено",
+                "Некорректное значение": "Некоректне значення",
+                "Тир не определён": "Тир не визначено",
+                "Поиск показателя...": "Пошук показника...",
+                "T1 = 10, T2 = 5, T3 = 2.5, T4 = 0, T5 = −5. Границы тиров повторяют интервалы формулы 1 для соответствующего показателя; для новых показателей используется ближайший аналог.": "T1 = 10, T2 = 5, T3 = 2.5, T4 = 0, T5 = −5. Межі тирів відповідають інтервалам формули 1 для відповідного показника; для нових показників використовується найближчий аналог.",
+                "Максимум: 420 баллов. Процент: сумма баллов ÷ 420 × 100.": "Максимум: 420 балів. Відсоток: сума балів ÷ 420 × 100.",
                 "Ориентир по баллам особенностей": "Орієнтир балів рис",
                 "Оценка особенностей": "Оцінка рис",
                 "Примеры баллов из таблицы": "Приклади балів із таблиці",
@@ -2545,7 +2627,7 @@
                 "баллов": "балів",
                 "б.": "б.",
                 "Выбран": "Обрано",
-                "Ожидает значения IAA и JFA": "Очікує значень IAA та JFA",
+                "Ожидает": "Очікує",
                 "Нужно ввести значение": "Потрібно ввести значення",
                 "Сначала введи обязательное значение.": "Спочатку введіть обов'язкове значення.",
                 "Ручные оценки должны быть в диапазоне от 0 до 10.": "Ручні оцінки мають бути в діапазоні від 0 до 10.",
@@ -2759,6 +2841,7 @@
                 "Потому что это довольно неточный инструмент. Автоматический анализ может неверно определить ключевые точки лица из-за ракурса, перспективных искажений камеры, освещения или мимики. Даже небольшая ошибка в положении точки заметно влияет на итоговые пропорции и баллы.": "Тому що це досить неточний інструмент. Автоматичний аналіз може неправильно визначити ключові точки обличчя через ракурс, перспективні спотворення камери, освітлення або міміку. Навіть невелика похибка помітно впливає на підсумкові пропорції та бали.",
                 "Поэтому замеры здесь выполняются вручную: так проще проверить каждую точку и исправить неточность. Для более надёжного результата используйте фото без искажений и внимательно следуйте схемам во вкладке «Как измерять».": "Тому тут вимірювання виконуються вручну: так легше перевірити кожну точку й виправити похибку. Для надійнішого результату використовуйте неспотворене фото та дотримуйтеся схем у вкладці «Як вимірювати».",
                 "Здесь показаны примеры того, как делать замеры.": "Тут наведено приклади вимірювань.",
+                "Выбрать формулу замеров анфаса": "Вибрати формулу вимірювань анфасу",
                 "Красную линию делите на зелёную.": "Поділіть червону лінію на зелену.",
                 "Анфас": "Анфас",
                 "Профиль": "Профіль",
@@ -2946,9 +3029,18 @@
                 "Разница IAA и JFA": "Різниця IAA та JFA",
                 "Введи значения IAA и JFA для автоподсчёта": "Введіть значення IAA та JFA для автоматичного розрахунку",
                 "Автоматически рассчитывается как |IAA − JFA| и выбирает тир.": "Автоматично обчислюється як |IAA − JFA| і визначає рівень.",
+                "Ожидает значения IAA и JFA": "Очікує значень IAA та JFA",
+                "Разница BIT и BIG": "Різниця BIT і BIG",
+                "Введи значения BIT и BIG для автоподсчёта": "Введіть значення BIT і BIG для автоматичного розрахунку",
+                "Автоматически рассчитывается как |BIT − BIG| и выбирает тир.": "Автоматично обчислюється як |BIT − BIG| і визначає рівень.",
+                "Разница CT и ET": "Різниця CT і ET",
+                "Введи значения CT и ET для автоподсчёта": "Введіть значення CT і ET для автоматичного розрахунку",
+                "Автоматически рассчитывается как |CT − ET| и выбирает тир.": "Автоматично обчислюється як |CT − ET| і визначає рівень.",
+                "Введите значение": "Введіть значення",
                 "Ввести значение": "Введіть значення",
                 "(обязательно)": "(обов'язково)",
                 "Например, 0,85": "Наприклад, 0,85",
+                "Например, 75 или 0,75": "Наприклад, 75 або 0,75",
                 "Обязательно введи число, чтобы применить тир.": "Введіть число, щоб застосувати рівень.",
                 "В единицах, указанных в шкале выше": "В одиницях, зазначених у шкалі вище",
                 "Открыть схему замера": "Відкрити схему вимірювання",
@@ -3150,6 +3242,7 @@
         let currentGender = 'male';
         let currentMainTab = 'calculator';
         let activeMeasurementGuide = 'front';
+        let activeFrontGuideFormula = 'formula1';
         let activeFaqSubtab = 'where';
         let activeFeatureBenchmarkGender = 'men';
         const noteLists = {
@@ -3453,11 +3546,11 @@
                 { name: "Vito Basso", score: 7.68, photo: 18 },
                 { name: "Robert Pattinson", score: 7.63, photo: 19 },
                 { name: "Brad Pitt", score: 7.55, photo: 20 },
-                { name: "Cillian Murphy", score: 7.44, photo: 21 },
                 { name: "Penn Badgley", score: 7.42, photo: 22 },
                 { name: "Oussama Guessoum", score: 7.36, photo: 23 },
                 { name: "Sean O’Pry", score: 7.34, photo: 24 },
                 { name: "Elias de Poot", score: 7.29, photo: 25 },
+                { name: "Cillian Murphy", score: 7.04, photo: 21 },
                 { name: "Marlon Teixeira", score: 6.96, photo: 26 },
                 { name: "Jordan Barrett", score: 6.92, photo: 27 },
                 { name: "Francisco Lachowski", score: 6.73, photo: 28 },
@@ -3669,7 +3762,7 @@
             },
             { 
                 id: 23, name: "25. Lower Third Proportion", category: "jaw", 
-                labels: ["0.30 - 0.34","0.29 - 0.30 ; 0.34 - 0.35","0.28 - 0.29 ; 0.35 - 0.36","0.27 - 0.28 ; 0.36 - 0.37","0.26 - 0.27 ; 0.37 - 0.38","0.25 - 0.26 ; 0.38 - 0.39","<0.25 ; >0.39"], 
+                labels: ["30% - 34%","29% - 30% ; 34% - 35%","28% - 29% ; 35% - 36%","27% - 28% ; 36% - 37%","26% - 27% ; 37% - 38%","25% - 26% ; 38% - 39%","<25% ; >39%"], 
                 scores: [5, 3.4, 1.7, 0.85, -1.7, -3.4, -5] 
             },
             { 
@@ -3736,6 +3829,120 @@
                 scores: [8.5, 5.78, 2.89, 1.44, -2.89, -5.78, -8.5] 
             },
         ];
+
+        const frontFormula1PercentageRatioIds = new Set([3, 7, 17, 21, 24, 26, 30]);
+        const frontFormula2Parameters = [
+            { id: 1, name: "Eye Separation Ratio (ESR)", ideal: [45, 47.9], idealFemale: [45, 47.9], tierLimits: [0.5, 1, 1.5, 2.3], unit: "%", percentForm: true },
+            { id: 2, name: "Outer Canthal Distance (OCD)", ideal: [62, 68], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 3, name: "Intercanthal Distance (ICD)", ideal: [0.93, 1.05], tierLimits: [0.03, 0.06, 0.09, 0.12], unit: "" },
+            { id: 4, name: "Eye Aspect Ratio (EAR)", ideal: [3, 3.6], idealFemale: [2.7, 3.3], tierLimits: [0.15, 0.25, 0.45, 0.6], unit: "" },
+            { id: 5, name: "Palpebral Fissure Length to Bizygomatic Width (PFL/BYZGO)", ideal: [19.5, 21.5], tierLimits: [0.5, 1, 1.5, 2], unit: "%", percentForm: true },
+            { id: 6, name: "Mouth Width to IPD (M/IPD)", ideal: [80, 88], tierLimits: [3, 6, 9, 12], unit: "%", percentForm: true },
+            { id: 7, name: "Eyebrow Length (EBL)", ideal: [69, 79], tierLimits: [2, 4, 6, 8], unit: "%", percentForm: true },
+            { id: 8, name: "Eyebrow Setness (EBS)", ideal: [90, 98], tierLimits: [2, 4, 6, 8], unit: "%", percentForm: true },
+            { id: 9, name: "Nose to ICD", ideal: [1, 1.1], tierLimits: [0.05, 0.1, 0.15, 0.2], unit: "" },
+            { id: 10, name: "Eye-Mouth-Eye Angle (EME)", ideal: [47, 48], tierLimits: [1, 2, 3, 4], unit: "°" },
+            { id: 11, name: "Ipsilateral Alar Angle (IAA)", ideal: [85, 95], tierLimits: [2, 4, 6, 8], unit: "°" },
+            { id: 12, name: "Jaw Frontal Angle (JFA)", ideal: [85, 95], idealFemale: [86, 97], tierLimits: [2, 4, 6, 8], unit: "°" },
+            { id: 13, name: "Deviation: IAA to JFA (DEV IAA/JFA)", ideal: [0, 3], tierLimits: [2, 4, 6, 8], unit: "°" },
+            { id: 14, name: "Bitemporal Width (BIT)", ideal: [85, 95], idealFemale: [79, 92], tierLimits: [2, 4, 6, 8], unit: "%", percentForm: true },
+            { id: 16, name: "Bigonial Width (BIG)", ideal: [85, 92], idealFemale: [82, 89], tierLimits: [2, 5, 7, 11], unit: "%", percentForm: true },
+            { id: 15, name: "Deviation: Bitemporal to Bigonial (DEV BIT/BIG)", ideal: [0, 3], tierLimits: [2, 4, 6, 8], unit: "%" },
+            { id: 17, name: "Jaw Width-to-Height Ratio (JWHR)", ideal: [1.85, 1.95], tierLimits: [0.04, 0.08, 0.12, 0.16], unit: "" },
+            { id: 18, name: "Mouth Width to Bigonial Width (M/BIG)", ideal: [40, 45], tierLimits: [3, 6, 9, 12], unit: "%", percentForm: true },
+            { id: 19, name: "Gonial Slopes / Jaw Slopes (GS)", ideal: [138, 143], tierLimits: [2, 4, 6, 8], unit: "°" },
+            { id: 20, name: "Mouth to Nose Width Ratio (M/N)", ideal: [1.38, 1.52], tierLimits: [0.08, 0.16, 0.24, 0.32], unit: "" },
+            { id: 21, name: "Midface Ratio (MF)", ideal: [0.95, 1.03], tierLimits: [0.03, 0.06, 0.09, 0.12], unit: "" },
+            { id: 22, name: "Facial Width-to-Height Ratio (FWHR)", ideal: [1.9, 2.05], tierLimits: [0.05, 0.1, 0.15, 0.2], unit: "" },
+            { id: 23, name: "Total Facial Width-to-Height Ratio (TFWHR)", ideal: [1.33, 1.38], idealFemale: [1.29, 1.33], tierLimits: [0.03, 0.06, 0.09, 0.12], unit: "" },
+            { id: 24, name: "Cheekbone High Setness (CBS)", greaterThan: 80, tierLimits: [4, 10, 14, 20], unit: "%", percentForm: true },
+            { id: 25, name: "Nose Height-to-Width Ratio (N/H)", ideal: [1.4, 1.59], tierLimits: [0.05, 0.1, 0.15, 0.2], unit: "" },
+            { id: 26, name: "Mouth-to-Chin Width Ratio (M/C)", ideal: [0.95, 1.05], tierLimits: [0.05, 0.1, 0.15, 0.2], unit: "" },
+            { id: 27, name: "Nose Bridge-to-Alar Ratio (NBR/ALA)", ideal: [2, 2.15], tierLimits: [0.05, 0.1, 0.15, 0.2], unit: "" },
+            { id: 28, name: "Nose Width to Bizygomatic Width (N/BYZGO)", ideal: [24, 26], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 29, name: "Canthal Tilt (CT)", ideal: [5, 8], idealFemale: [6, 10], tierLimits: [1.5, 3, 4.5, 6], unit: "°" },
+            { id: 30, name: "Eyebrow Tilt (ET)", ideal: [5, 13], idealFemale: [11, 19], tierLimits: [1.5, 3, 4.5, 6], unit: "°" },
+            { id: 31, name: "Deviation: Canthal Tilt to Eyebrow Tilt (DEV CT/ET)", ideal: [0, 3], tierLimits: [2, 4, 6, 8], unit: "°" },
+            { id: 32, name: "Forehead Height/Width Ratio (FHWR)", ideal: [44, 50], tierLimits: [2.5, 5, 7.5, 10], unit: "%", percentForm: true },
+            { id: 33, name: "Lower Lip to Upper Lip Ratio (LL/UL)", ideal: [1.4, 1.9], tierLimits: [0.1, 0.2, 0.3, 0.4], unit: "" },
+            { id: 34, name: "Lower Third Proportion (L3P)", ideal: [31, 33], idealFemale: [30, 34], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 35, name: "Lower Full Face Ratio (LFF)", ideal: [63, 67], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 36, name: "Chin-to-Philtrum Ratio (C/P)", ideal: [2.1, 2.5], idealFemale: [2, 2.5], tierLimits: [0.1, 0.2, 0.3, 0.4], unit: "" },
+            { id: 37, name: "Facial Thirds - Lower (FT-L)", ideal: [34, 37], idealFemale: [30, 33], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 38, name: "Facial Thirds - Middle (FT-M)", ideal: [31, 33], idealFemale: [32, 34], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 39, name: "Facial Thirds - Upper (FT-U)", ideal: [30, 32], idealFemale: [30, 34], tierLimits: [1, 2, 3, 4], unit: "%", percentForm: true },
+            { id: 40, name: "Lip Height-to-Width Ratio (LP WHR)", ideal: [3, 3.5], tierLimits: [0.15, 0.25, 0.45, 0.6], unit: "" },
+            { id: 41, name: "Neck Width (NW)", ideal: [90, 98], idealFemale: [77, 87], tierLimits: [3, 6, 9, 12], unit: "%", percentForm: true },
+            { id: 42, name: "Eyebrow Spacing (EYS)", ideal: [2.9, 3.6], tierLimits: [0.15, 0.25, 0.45, 0.6], unit: "" }
+        ];
+        const frontFormula2NoteLabels = [
+            "ESR",
+            "OCD",
+            "ICD",
+            "Eye Aspect Ratio",
+            "PFL/BYZGO",
+            "Mouth Width to IPD",
+            "Eyebrow Length",
+            "Eyebrow Setness",
+            "Nose to ICD",
+            "EME",
+            "IAA",
+            "JFA",
+            "DEV IAA/JFA",
+            "Bitemporal Width",
+            "Bigonial Width",
+            "Deviation: Bitemporal to Bigonial",
+            "Jaw Width-to-Height Ratio",
+            "Mouth Width to Bigonial Width",
+            "Jaw Slopes",
+            "Mouth to Nose Width Ratio",
+            "Midface Ratio",
+            "FWHR",
+            "tFWHR",
+            "Cheekbone High Setness",
+            "Nose Height-to-Width Ratio",
+            "Mouth-to-Chin Width Ratio",
+            "Nose Bridge-to-Alar Ratio",
+            "N/BYZGO",
+            "Canthal Tilt (CT)",
+            "Eyebrow Tilt (ET)",
+            "DEV CT/ET",
+            "Forehead Height/Width Ratio",
+            "Lower Lip to Upper Lip Ratio",
+            "Lower Third Proportion",
+            "Lower Full Face Ratio",
+            "Chin-to-Philtrum Ratio",
+            "Facial Thirds - Lower (FT-L)",
+            "Facial Thirds - Middle (FT-M)",
+            "Facial Thirds - Upper (FT-U)",
+            "MAR",
+            "Neck Width",
+            "Eyebrow Spacing"
+        ];
+        frontFormula2Parameters.forEach((parameter, index) => {
+            parameter.name = frontFormula2NoteLabels[index];
+        });
+        const frontFormula2TierPoints = [10, 5, 2.5, 0, -5];
+        const frontFormula2TierByFormula1Tier = [2, 2, 3, 3, 4, 4, 5];
+        const frontFormula2GuideImageSources = {
+            1: 1, 2: 30, 3: 5, 4: 6, 5: 3, 7: 28, 8: 28, 9: 33, 10: 8,
+            11: 4, 12: 9, 13: 15, 14: 25, 15: 25, 16: 10, 17: 32, 18: 21, 19: 35, 20: 22,
+            21: 16, 22: 13, 23: 14, 24: 27, 25: 18, 26: 34, 27: 4, 28: 17, 29: 2, 30: 29,
+            31: 29, 32: 26, 33: 19, 34: 23, 35: 7, 36: 20, 37: 11, 38: 11, 39: 11, 40: 19,
+            41: 24, 42: 28
+        };
+        const frontFormula2GuideImagePaths = {
+            6: 'assets/measurements/front/front-m-ipd.png',
+            7: 'assets/measurements/front/front-ebl.png',
+            15: 'assets/measurements/front/front-dev-bit-big.png',
+            27: 'assets/measurements/front/front-nbr-ala.png',
+            31: 'assets/measurements/front/front-dev-ct-et.png',
+            37: 'assets/measurements/front/front-ft-l.png',
+            38: 'assets/measurements/front/front-ft-m.png',
+            39: 'assets/measurements/front/front-ft-u.png',
+            40: 'assets/measurements/front/front-lp-whr.png',
+            42: 'assets/measurements/front/front-eys.png'
+        };
 
         function profileRangeLabels(min, max, steps, unit) {
             const format = value => String(Number(value.toFixed(3)));
@@ -3919,6 +4126,35 @@
         const selectedTiers = {};
         pdfParameters.forEach(p => selectedTiers[p.id] = 0);
         [4, 9, 15].forEach(parameterId => selectedTiers[parameterId] = null);
+        const frontFormula2Inputs = {};
+        const frontFormula2DerivedDifferences = [
+            {
+                id: 13, minuendId: 11, subtrahendId: 12,
+                label: 'Разница IAA и JFA',
+                waitingText: 'Введи значения IAA и JFA для автоподсчёта',
+                waitingStatus: 'Ожидает',
+                hint: 'Автоматически рассчитывается как |IAA − JFA| и выбирает тир.'
+            },
+            {
+                id: 15, minuendId: 14, subtrahendId: 16,
+                label: 'Разница BIT и BIG',
+                waitingText: 'Введи значения BIT и BIG для автоподсчёта',
+                waitingStatus: 'Ожидает',
+                hint: 'Автоматически рассчитывается как |BIT − BIG| и выбирает тир.'
+            },
+            {
+                id: 31, minuendId: 29, subtrahendId: 30,
+                label: 'Разница CT и ET',
+                waitingText: 'Введи значения CT и ET для автоподсчёта',
+                waitingStatus: 'Ожидает',
+                hint: 'Автоматически рассчитывается как |CT − ET| и выбирает тир.'
+            }
+        ];
+        const frontFormula2DerivedDifferenceIds = new Set(
+            frontFormula2DerivedDifferences.map(difference => difference.id)
+        );
+        let activeFrontFormula = 'classic';
+        const frontNotesByFormula = { classic: '', ideal: '' };
 
         let activeCategory = 'all';
         let searchQuery = '';
@@ -4020,6 +4256,7 @@
                 if (tabName !== 'features' && tabName !== 'angularity' && tabName !== 'dimorphism' && tabName !== 'guide') applyGenderButtonTheme();
             }
             document.getElementById('genderSelector').classList.toggle('hidden', tabName === 'guide' || tabName === 'features' || tabName === 'angularity' || tabName === 'dimorphism' || tabName === 'overall');
+            document.getElementById('frontFormulaSelector').classList.toggle('hidden', tabName !== 'calculator');
             document.getElementById('siteFooter').classList.toggle('hidden', tabName !== 'guide');
             if (!isEnteringOverall) {
                 if (overallThemeSnapshot) {
@@ -4298,13 +4535,26 @@
         }
 
         function findMeasurementTier(parameter, type, rawValue) {
-            const input = String(rawValue).trim().replace(',', '.');
+            const rawInput = String(rawValue).trim();
+            const hasPercentSuffix = /%\s*$/.test(rawInput);
+            const input = (hasPercentSuffix ? rawInput.replace(/%\s*$/, '').trim() : rawInput)
+                .replace(',', '.');
             if (!input) return null;
-            const value = Number(input);
+            let value = Number(input);
             if (!Number.isFinite(value)) return null;
 
             const labels = getMeasurementLabels(parameter, type);
             if (!supportsNumericMeasurement(parameter, labels)) return null;
+
+            if (type === 'front') {
+                if (frontFormula1PercentageRatioIds.has(parameter.id)
+                    && (hasPercentSuffix || Math.abs(value) > 1)) {
+                    value /= 100;
+                } else if (labels.some(label => typeof label === 'string' && label.includes('%'))
+                    && !hasPercentSuffix && Math.abs(value) <= 1) {
+                    value *= 100;
+                }
+            }
 
             if (type === 'front' && parameter.id === 27 && value >= 79 && value < 80) return 1;
 
@@ -4362,6 +4612,226 @@
             if (!value) return null;
             const parsed = Number(value);
             return Number.isFinite(parsed) ? parsed : null;
+        }
+
+        function getFrontFormulaIdealRange(parameter) {
+            return currentGender === 'female' && parameter.idealFemale
+                ? parameter.idealFemale
+                : parameter.ideal;
+        }
+
+        function parseFrontFormulaIdealValue(parameter, rawValue) {
+            let value = parseMeasurementValue(rawValue);
+            if (value === null) return null;
+            if (parameter.percentForm && Math.abs(value) <= 1) value *= 100;
+            return value;
+        }
+
+        function updateFrontFormula2DerivedDifferences() {
+            for (const difference of frontFormula2DerivedDifferences) {
+                const minuendParameter = frontFormula2Parameters.find(parameter => parameter.id === difference.minuendId);
+                const subtrahendParameter = frontFormula2Parameters.find(parameter => parameter.id === difference.subtrahendId);
+                const minuend = parseFrontFormulaIdealValue(minuendParameter, frontFormula2Inputs[difference.minuendId]);
+                const subtrahend = parseFrontFormulaIdealValue(subtrahendParameter, frontFormula2Inputs[difference.subtrahendId]);
+
+                if (minuend === null || subtrahend === null) {
+                    delete frontFormula2Inputs[difference.id];
+                    continue;
+                }
+
+                frontFormula2Inputs[difference.id] = truncateToTwoDecimals(Math.abs(minuend - subtrahend));
+            }
+        }
+
+        function syncFrontFormula2DerivedDifferenceFields() {
+            updateFrontFormula2DerivedDifferences();
+            for (const difference of frontFormula2DerivedDifferences) {
+                const parameter = frontFormula2Parameters.find(item => item.id === difference.id);
+                const output = document.getElementById(`front-formula-ideal-value-${difference.id}`);
+                if (parameter && output) output.textContent = getFrontFormula2DerivedDifferenceDisplay(difference, parameter);
+
+                const status = document.getElementById(`front-formula-ideal-result-${difference.id}`);
+                if (parameter && status) status.textContent = getFrontFormulaIdealStatus(parameter);
+            }
+        }
+
+        function getFrontFormula2DerivedDifferenceDisplay(difference, parameter) {
+            const value = frontFormula2Inputs[difference.id];
+            return value === undefined
+                ? translateValue(difference.waitingText)
+                : `${value}${parameter.unit}`;
+        }
+
+        function getFrontFormulaIdealTier(parameter, rawValue) {
+            const value = parseFrontFormulaIdealValue(parameter, rawValue);
+            if (value === null) return null;
+
+            const idealRange = getFrontFormulaIdealRange(parameter);
+            let distance;
+            if (idealRange) {
+                if (value >= idealRange[0] && value <= idealRange[1]) return 1;
+                distance = value < idealRange[0]
+                    ? idealRange[0] - value
+                    : value - idealRange[1];
+            } else {
+                if (value > parameter.greaterThan) return 1;
+                distance = parameter.greaterThan - value;
+            }
+
+            if (parameter.id === 1) {
+                const formula1Parameter = pdfParameters.find(source => source.id === 1);
+                const formula1Tier = findMeasurementTier(formula1Parameter, 'front', String(value));
+                if (formula1Tier !== null) return frontFormula2TierByFormula1Tier[formula1Tier];
+            }
+
+            const tierLimits = parameter.tierLimits;
+            const tierIndex = tierLimits.slice(0, -1).findIndex(limit => distance <= limit + 1e-9);
+            if (tierIndex !== -1) return tierIndex + 2;
+            return distance <= tierLimits[tierLimits.length - 1] + 1e-9 ? 4 : 5;
+        }
+
+        function getFrontFormulaIdealTotal() {
+            return frontFormula2Parameters.reduce((total, parameter) => {
+                const tier = getFrontFormulaIdealTier(parameter, frontFormula2Inputs[parameter.id]);
+                return total + (tier === null ? 0 : frontFormula2TierPoints[tier - 1]);
+            }, 0);
+        }
+
+        function getFrontFormulaIdealStatus(parameter) {
+            const rawValue = frontFormula2Inputs[parameter.id] ?? '';
+            if (!rawValue.trim()) {
+                const difference = frontFormula2DerivedDifferences.find(item => item.id === parameter.id);
+                return difference ? translateValue(difference.waitingStatus) : 'Не введено';
+            }
+            if (parseMeasurementValue(rawValue) === null) return 'Некорректное значение';
+            const tier = getFrontFormulaIdealTier(parameter, rawValue);
+            if (tier === null) return 'Тир не определён · 0 баллов';
+            const score = frontFormula2TierPoints[tier - 1];
+            const pointsWord = Math.abs(score) === 2.5 ? 'балла' : 'баллов';
+            return `Tier ${tier} · ${score} ${pointsWord}`;
+        }
+
+        function renderFrontFormulaIdeal() {
+            const container = document.getElementById('frontFormulaIdealParams');
+            if (!container) return;
+            updateFrontFormula2DerivedDifferences();
+            const search = document.getElementById('frontFormulaIdealSearch')?.value ?? '';
+            const filteredParameters = frontFormula2Parameters.filter(parameter =>
+                matchesLocalizedSearch(parameter.name, search, currentLanguage)
+            );
+
+            container.innerHTML = filteredParameters.map(parameter => {
+                const idealRange = getFrontFormulaIdealRange(parameter);
+                const rangeText = idealRange
+                    ? `${idealRange[0]}–${idealRange[1]}${parameter.unit}`
+                    : `>${parameter.greaterThan}${parameter.unit}`;
+                const valueId = `front-formula-ideal-value-${parameter.id}`;
+                const resultId = `front-formula-ideal-result-${parameter.id}`;
+                const difference = frontFormula2DerivedDifferences.find(item => item.id === parameter.id);
+                const valuePlaceholder = parameter.percentForm
+                    ? 'Например, 75 или 0,75'
+                    : 'Введите значение';
+                const measurementMarkup = difference
+                    ? `
+                        <div class="mt-4 border-t border-slate-800/80 pt-4">
+                            <p class="text-xs font-semibold text-slate-400">${escapeAttribute(translateValue(difference.label))}</p>
+                            <output id="${valueId}" class="mt-1 block text-sm text-slate-200" aria-live="polite">
+                                ${escapeAttribute(getFrontFormula2DerivedDifferenceDisplay(difference, parameter))}
+                            </output>
+                            <p class="mt-1 text-[10px] text-slate-500">${escapeAttribute(translateValue(difference.hint))}</p>
+                        </div>`
+                    : `
+                        <label for="${valueId}" class="mt-4 block text-xs font-semibold text-slate-400">Измеренное значение</label>
+                        <input id="${valueId}" type="text" inputmode="decimal" autocomplete="off"
+                            value="${escapeAttribute(frontFormula2Inputs[parameter.id] ?? '')}"
+                            placeholder="${escapeAttribute(translateValue(valuePlaceholder))}"
+                            oninput="updateFrontFormulaIdealValue(${parameter.id}, this.value)"
+                            class="mt-1.5 w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400">`;
+                return `
+                    <article class="glass-card rounded-2xl p-4 sm:p-5">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="min-w-0">
+                                <h3 class="text-sm font-bold text-white">${frontFormula2Parameters.indexOf(parameter) + 1}. ${escapeAttribute(parameter.name)}</h3>
+                                <p class="mt-1 text-xs text-slate-400">Идеал: ${escapeAttribute(rangeText)}</p>
+                            </div>
+                            <output id="${resultId}" class="text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900/90 border border-sky-900/70 text-sky-200 w-fit shrink-0" aria-live="polite">
+                                ${escapeAttribute(getFrontFormulaIdealStatus(parameter))}
+                            </output>
+                        </div>
+                        ${measurementMarkup}
+                    </article>`;
+            }).join('');
+            updateFrontFormulaIdealDisplay();
+        }
+
+        function updateFrontFormulaIdealDisplay() {
+            const total = getFrontFormulaIdealTotal();
+            const percentage = total / 420 * 100;
+            if (activeFrontFormula === 'ideal') {
+                const score = percentage / 10;
+                document.getElementById('finalScore').textContent = score.toFixed(2);
+                document.getElementById('finalScore').dataset.exactScore = String(score);
+                document.getElementById('frontTotalLabel').innerHTML =
+                    `${escapeAttribute(translateValue('Сумма баллов:'))} <span id="totalPoints" class="text-sky-200 font-semibold">${total.toFixed(2)}</span>`;
+            }
+            updateOverallScore();
+        }
+
+        window.updateFrontFormulaIdealValue = function(parameterId, value) {
+            if (!frontFormula2Parameters.some(parameter => parameter.id === parameterId)
+                || frontFormula2DerivedDifferenceIds.has(parameterId)) return;
+            frontFormula2Inputs[parameterId] = value.slice(0, 100);
+            syncFrontFormula2DerivedDifferenceFields();
+            const parameter = frontFormula2Parameters.find(item => item.id === parameterId);
+            const result = document.getElementById(`front-formula-ideal-result-${parameterId}`);
+            if (result) result.textContent = getFrontFormulaIdealStatus(parameter);
+            updateFrontFormulaIdealDisplay();
+        };
+
+        window.filterFrontFormulaIdeal = function() {
+            renderFrontFormulaIdeal();
+        };
+
+        window.setFrontFormula = function(formula) {
+            if (formula !== 'classic' && formula !== 'ideal') return;
+            if (formula === activeFrontFormula) return;
+            const notes = document.getElementById('frontNotes');
+            frontNotesByFormula[activeFrontFormula] = notes.value;
+            activeFrontFormula = formula;
+            const nextNotes = frontNotesByFormula[formula];
+            if (notes.value !== nextNotes) {
+                notes.value = nextNotes;
+                notes.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+            render();
+            saveAppState();
+        };
+
+        function updateFrontFormulaDisplay() {
+            const isIdealFormula = activeFrontFormula === 'ideal';
+            const classicPanel = document.getElementById('frontFormulaClassicPanel');
+            const idealPanel = document.getElementById('frontFormulaIdealPanel');
+            const classicButton = document.getElementById('frontFormulaClassicButton');
+            const idealButton = document.getElementById('frontFormulaIdealButton');
+            if (!classicPanel || !idealPanel || !classicButton || !idealButton) return;
+
+            classicPanel.classList.toggle('hidden', isIdealFormula);
+            idealPanel.classList.toggle('hidden', !isIdealFormula);
+            classicButton.setAttribute('aria-pressed', String(!isIdealFormula));
+            idealButton.setAttribute('aria-pressed', String(isIdealFormula));
+            const activeClasses = 'rounded-xl border border-sky-300 bg-sky-500/20 px-3 py-2 text-xs font-bold text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300';
+            const inactiveClasses = 'rounded-xl border border-slate-700 bg-slate-900/80 px-3 py-2 text-xs font-bold text-slate-300 transition hover:border-sky-400/70 hover:bg-slate-800 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300';
+            classicButton.className = isIdealFormula ? inactiveClasses : activeClasses;
+            idealButton.className = isIdealFormula ? activeClasses : inactiveClasses;
+
+            if (isIdealFormula) {
+                updateFrontFormulaIdealDisplay();
+            } else {
+                const points = document.getElementById('totalPoints').textContent;
+                document.getElementById('frontTotalLabel').innerHTML =
+                    `${escapeAttribute(translateValue('Сумма баллов:'))} <span id="totalPoints" class="text-sky-200 font-semibold">${escapeAttribute(points)}</span>`;
+                updateOverallScore();
+            }
         }
 
         function truncateToTwoDecimals(value) {
@@ -4424,6 +4894,13 @@
             const inputId = `${type}-measurement-${parameter.id}`;
             const resultId = `${type}-measurement-result-${parameter.id}`;
             const buttonId = `${type}-measurement-apply-${parameter.id}`;
+            const valuePlaceholder = (type === 'front'
+                && (frontFormula1PercentageRatioIds.has(parameter.id)
+                    || labels.some(label => typeof label === 'string' && label.includes('%'))))
+                || (type === 'profile'
+                    && labels.some(label => typeof label === 'string' && label.includes('%')))
+                ? 'Например, 75 или 0,75'
+                : 'Например, 0,85';
             const inputFocusClass = type === 'profile'
                 ? 'focus:ring-2 focus:ring-red-400'
                 : 'focus:ring-2 focus:ring-sky-400';
@@ -4441,7 +4918,7 @@
                     <div class="w-full sm:max-w-48">
                         <label for="${inputId}" class="block text-xs font-semibold text-slate-400 mb-1.5">Ввести значение${required ? ' (обязательно)' : ''}</label>
                         <input id="${inputId}" type="text" inputmode="decimal" autocomplete="off"
-                            value="${escapeAttribute(rawValue)}" placeholder="Например, 0,85" aria-describedby="${resultId}" ${required ? 'required aria-required="true"' : ''}
+                            value="${escapeAttribute(rawValue)}" placeholder="${escapeAttribute(translateValue(valuePlaceholder))}" aria-describedby="${resultId}" ${required ? 'required aria-required="true"' : ''}
                             oninput="updateMeasurementValue('${type}', ${parameter.id}, this.value)"
                             class="w-full rounded-xl bg-slate-900/80 border border-slate-700 px-3 py-2 text-sm text-slate-100 placeholder-slate-500 focus:outline-none ${inputFocusClass}">
                         <span class="mt-1 block text-[10px] text-slate-500">${required ? 'Обязательно введи число, чтобы применить тир.' : 'В единицах, указанных в шкале выше'}</span>
@@ -4632,7 +5109,8 @@
             document.getElementById('totalPoints').innerText = totalPoints.toFixed(2);
             document.getElementById('finalScore').innerText = finalScore.toFixed(2);
             document.getElementById('finalScore').dataset.exactScore = String(finalScore);
-            updateOverallScore();
+            renderFrontFormulaIdeal();
+            updateFrontFormulaDisplay();
         }
 
         function renderProfile() {
@@ -4797,11 +5275,28 @@
             profileTab.className = view === 'profile' ? activeClasses : inactiveClasses;
             frontTab.setAttribute('aria-selected', String(view === 'front'));
             profileTab.setAttribute('aria-selected', String(view === 'profile'));
+            document.getElementById('guideFrontFormulaTabs').classList.toggle('hidden', view !== 'front');
+            const formula1Tab = document.getElementById('guideFormula1Tab');
+            const formula2Tab = document.getElementById('guideFormula2Tab');
+            formula1Tab.className = activeFrontGuideFormula === 'formula1' ? activeClasses : inactiveClasses;
+            formula2Tab.className = activeFrontGuideFormula === 'formula2' ? activeClasses : inactiveClasses;
+            formula1Tab.setAttribute('aria-selected', String(activeFrontGuideFormula === 'formula1'));
+            formula2Tab.setAttribute('aria-selected', String(activeFrontGuideFormula === 'formula2'));
             document.getElementById('measurementGuideGallery').setAttribute(
                 'aria-labelledby',
-                view === 'front' ? 'guideFrontTab' : 'guideProfileTab'
+                view === 'profile'
+                    ? 'guideProfileTab'
+                    : activeFrontGuideFormula === 'formula1'
+                        ? 'guideFormula1Tab'
+                        : 'guideFormula2Tab'
             );
             renderMeasurementGuide();
+        };
+
+        window.selectFrontFormulaGuide = function(formula) {
+            if (formula !== 'formula1' && formula !== 'formula2') return;
+            activeFrontGuideFormula = formula;
+            window.selectMeasurementGuide('front');
         };
 
         window.selectFaqSubtab = function(tab) {
@@ -4847,12 +5342,33 @@
             });
         };
 
+        function fitMeasurementGuideImages(container) {
+            const fitOverrides = {
+                'front-01.jpg': 'contain',
+                'front-03.jpg': 'contain',
+                'front-05.jpg': 'contain',
+                'front-ear.png': 'cover'
+            };
+            container.querySelectorAll('img[data-fit-by-aspect]').forEach(image => {
+                const applyFit = () => {
+                    if (!image.naturalWidth || !image.naturalHeight) return;
+                    const aspectRatio = image.naturalWidth / image.naturalHeight;
+                    const imageName = image.getAttribute('src').split('/').pop();
+                    const fitOverride = fitOverrides[imageName];
+                    const keepWholeImage = fitOverride
+                        ? fitOverride === 'contain'
+                        : aspectRatio >= 0.67 && aspectRatio <= 1.15;
+                    image.classList.toggle('object-contain', keepWholeImage);
+                    image.classList.toggle('object-cover', !keepWholeImage);
+                };
+                if (image.complete) applyFit();
+                else image.addEventListener('load', applyFit, { once: true });
+            });
+        }
+
         function renderMeasurementGuide() {
             const container = document.getElementById('measurementGuideGallery');
             const isFront = activeMeasurementGuide === 'front';
-            const parameters = isFront ? pdfParameters : profileParameters;
-            const folder = isFront ? 'front' : 'profile';
-            const prefix = isFront ? 'front' : 'profile';
             const frontImageNumberOverrides = {
                 7: 8, 8: 7,
                 13: 14, 14: 15, 15: 13,
@@ -4861,49 +5377,77 @@
                 25: 26, 26: 27, 27: 25,
                 34: 35, 35: 34
             };
-            const frontBlurBackgroundIds = new Set([7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22, 25, 26, 27, 34, 35]);
+            const getFrontImagePath = parameterId => {
+                const imageNumber = String(frontImageNumberOverrides[parameterId] || parameterId).padStart(2, '0');
+                if (parameterId === 21) return 'assets/measurements/front/front-mouth-bigonial.png';
+                if (parameterId === 35) return 'assets/measurements/front/front-jaw-slopes.png';
+                if (parameterId === 2) return 'assets/measurements/front/front-canthal-tilt.png';
+                if (parameterId === 6) return 'assets/measurements/front/front-ear.png';
+                if (parameterId === 29) return 'assets/measurements/front/front-eyebrow-tilt.png';
+                if (parameterId === 19) return 'assets/measurements/front/front-19-custom.png';
+                if (parameterId === 31) return 'assets/measurements/front/front-31-custom.jpg';
+                if (parameterId === 32) return 'assets/measurements/front/front-jwhr.png';
+                if (parameterId === 34) return 'assets/measurements/front/front-34-custom.jpg';
+                if (parameterId === 26) return 'assets/measurements/front/front-26-custom.jpg';
+                if (parameterId === 37) return 'assets/measurements/front/front-36-custom.png';
+                if (parameterId === 13) return 'assets/measurements/front/front-13-custom.png';
+                if (parameterId === 30) return 'assets/measurements/front/front-30-custom.png';
+                return `assets/measurements/front/front-${imageNumber}.jpg`;
+            };
+            if (isFront && activeFrontGuideFormula === 'formula2') {
+                container.innerHTML = frontFormula2Parameters.map((parameter, index) => {
+                    const sourceParameterId = frontFormula2GuideImageSources[parameter.id];
+                    const imagePath = frontFormula2GuideImagePaths[parameter.id] || getFrontImagePath(sourceParameterId);
+                    const title = escapeAttribute(parameter.name);
+                    return `
+                        <article class="glass-card self-start rounded-2xl p-4 flex flex-col gap-3">
+                            <a href="${imagePath}" data-image-preview
+                                class="group relative isolate flex aspect-[3/2] w-full items-center justify-center overflow-hidden rounded-xl border border-slate-700/80 bg-slate-950 transition duration-300 hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-950/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                                aria-label="Открыть схему замера: ${title}">
+                                <img src="${imagePath}" alt="" aria-hidden="true" loading="lazy"
+                                    class="absolute inset-0 h-full w-full scale-110 object-cover opacity-45 blur-2xl">
+                                <span aria-hidden="true" class="absolute inset-0 z-[1] bg-slate-950/35"></span>
+                                <img src="${imagePath}" alt="Схема замера: ${title}"
+                                    loading="lazy" data-fit-by-aspect
+                                    class="relative z-10 h-full w-full object-contain">
+                            </a>
+                            <h3 class="min-h-10 pt-1 text-sm font-bold leading-5 text-white">${index + 1}. ${escapeAttribute(parameter.name)}</h3>
+                        </article>`;
+                }).join('');
+                fitMeasurementGuideImages(container);
+                return;
+            }
+            const parameters = isFront ? pdfParameters : profileParameters;
+            const folder = isFront ? 'front' : 'profile';
+            const prefix = isFront ? 'front' : 'profile';
             container.innerHTML = parameters.map((parameter, index) => {
                 const imageNumber = String(isFront
                     ? (frontImageNumberOverrides[parameter.id] || parameter.id)
                     : index + 1).padStart(2, '0');
                 const title = escapeAttribute(parameter.name);
-                const imagePath = isFront && parameter.id === 19
-                    ? 'assets/measurements/front/front-19-custom.png'
-                    : isFront && parameter.id === 31
-                        ? 'assets/measurements/front/front-31-custom.jpg'
-                    : isFront && parameter.id === 32
-                        ? 'assets/measurements/front/front-32-custom.jpg'
-                    : isFront && parameter.id === 34
-                        ? 'assets/measurements/front/front-34-custom.jpg'
-                    : isFront && parameter.id === 26
-                        ? 'assets/measurements/front/front-26-custom.jpg'
-                    : isFront && parameter.id === 37
-                        ? 'assets/measurements/front/front-36-custom.png'
-                    : isFront && parameter.id === 13
-                        ? 'assets/measurements/front/front-13-custom.png'
-                    : isFront && parameter.id === 30
-                        ? 'assets/measurements/front/front-30-custom.png'
-                        : !isFront && parameter.id === 122
-                            ? 'assets/measurements/profile/profile-22-custom.png'
-                        : !isFront && parameter.id === 127
+                const imagePath = isFront
+                    ? getFrontImagePath(parameter.id)
+                    : parameter.id === 122
+                        ? 'assets/measurements/profile/profile-22-custom.png'
+                        : parameter.id === 127
                             ? 'assets/measurements/profile/profile-27-custom.png'
                             : `assets/measurements/${folder}/${prefix}-${imageNumber}.jpg`;
-                const isFrontItem19 = isFront && parameter.id === 19;
-                const hasBlurBackground = !isFront || frontBlurBackgroundIds.has(parameter.id);
                 return `
-                    <article class="glass-card rounded-2xl p-4 flex flex-col">
+                    <article class="glass-card self-start rounded-2xl p-4 flex flex-col gap-3">
                         <a href="${imagePath}" data-image-preview
-                            class="${hasBlurBackground ? 'relative isolate ' : ''}${isFrontItem19 ? 'flex justify-center ' : 'block ' }rounded-xl overflow-hidden ${isFrontItem19 ? '' : 'bg-slate-950/70 '}focus:outline-none focus:ring-2 focus:ring-purple-400"
+                            class="group relative isolate flex aspect-[3/2] w-full items-center justify-center overflow-hidden rounded-xl border border-slate-700/80 bg-slate-950 transition duration-300 hover:border-purple-400/60 hover:shadow-lg hover:shadow-purple-950/30 focus:outline-none focus:ring-2 focus:ring-purple-400"
                             aria-label="Открыть схему замера: ${title}">
-                            ${hasBlurBackground ? `<img src="${imagePath}" alt="" aria-hidden="true" loading="lazy"
-                                class="absolute inset-0 h-full w-full scale-110 object-cover blur-xl opacity-40">
-                                <span aria-hidden="true" class="absolute inset-0 bg-slate-950/25"></span>` : ''}
+                            <img src="${imagePath}" alt="" aria-hidden="true" loading="lazy"
+                                class="absolute inset-0 h-full w-full scale-110 object-cover opacity-45 blur-2xl">
+                            <span aria-hidden="true" class="absolute inset-0 z-[1] bg-slate-950/35"></span>
                             <img src="${imagePath}" alt="Схема замера: ${title}"
-                                loading="lazy" class="${hasBlurBackground ? 'relative z-10 ' : ''}${isFrontItem19 ? 'block w-auto max-w-full max-h-64 ' : 'w-full max-h-64 '}object-contain">
+                                loading="lazy" data-fit-by-aspect
+                                class="relative z-10 h-full w-full object-contain">
                         </a>
-                        <h3 class="mt-3 text-sm font-bold text-white">${title}</h3>
+                        <h3 class="min-h-10 pt-1 text-sm font-bold leading-5 text-white">${title}</h3>
                     </article>`;
             }).join('');
+            fitMeasurementGuideImages(container);
         }
 
         function renderAngularity() {
@@ -5176,11 +5720,16 @@
         };
 
         window.resetValues = function() {
-            pdfParameters.forEach(p => selectedTiers[p.id] = 0);
-            [4, 9, 15].forEach(parameterId => selectedTiers[parameterId] = null);
-            Object.keys(measurementInputs.front).forEach(id => delete measurementInputs.front[id]);
-            document.getElementById('searchInput').value = '';
-            searchQuery = '';
+            if (activeFrontFormula === 'classic') {
+                pdfParameters.forEach(parameter => selectedTiers[parameter.id] = 0);
+                [4, 9, 15].forEach(parameterId => selectedTiers[parameterId] = null);
+                Object.keys(measurementInputs.front).forEach(id => delete measurementInputs.front[id]);
+                document.getElementById('searchInput').value = '';
+                searchQuery = '';
+            } else {
+                Object.keys(frontFormula2Inputs).forEach(id => delete frontFormula2Inputs[id]);
+                document.getElementById('frontFormulaIdealSearch').value = '';
+            }
             showToast("Значения сброшены");
             render();
         };
@@ -5324,13 +5873,129 @@
                 front: document.getElementById('frontNotes'),
                 profile: document.getElementById('profileNotes')
             }[section];
-            const list = noteLists[section];
+            const list = section === 'front' && activeFrontFormula === 'ideal'
+                ? frontFormula2NoteLabels.map((name, index) => `${index + 1}. ${name} –`)
+                : noteLists[section];
             if (!target || !list) return;
 
             const separator = target.value && !target.value.endsWith('\n') ? '\n' : '';
             target.value += `${separator}${list.join('\n')}`;
             target.dispatchEvent(new Event('input', { bubbles: true }));
             target.focus();
+        }
+
+        function applyFrontNotesToFormula(notes) {
+            const rows = String(notes).split(/\r?\n/);
+
+            rows.forEach(row => {
+                const numberMatch = row.match(/^(\d{1,2})\.\s*/);
+                if (!numberMatch) return;
+                const number = Number(numberMatch[1]);
+                let separatorIndex = row.search(/[–—]/);
+                if (separatorIndex === -1) {
+                    const hyphenMatch = row.match(/\s+-\s*(.*)$/);
+                    if (hyphenMatch) {
+                        separatorIndex = row.indexOf(hyphenMatch[0]) + hyphenMatch[0].indexOf('-');
+                    }
+                }
+                if (separatorIndex === -1) return;
+                const value = row.slice(separatorIndex + 1).trim();
+                if (!value) return;
+
+                if (activeFrontFormula === 'ideal') {
+                    const parameterLabel = row.slice(numberMatch[0].length, separatorIndex).trim();
+                    const parameter = frontFormula2Parameters.find(item =>
+                        item.name.toLowerCase() === parameterLabel.toLowerCase()
+                    ) || frontFormula2Parameters[number - 1];
+                    if (!parameter) return;
+                    window.updateFrontFormulaIdealValue(parameter.id, value);
+                    const input = document.getElementById(`front-formula-ideal-value-${parameter.id}`);
+                    if (input) input.value = value;
+                    return;
+                }
+                const classicParameterIds = [
+                    1, 2, 3, 5, 6, 7, 30, 8, 4, 9, 15, 35, 10, 24, 32,
+                    13, 14, 16, 7, 17, 18, 33, 19, 20, 23, 11, 12, 31,
+                    34, 21, 22, 25, 36, 27, 28, 29
+                ];
+                const parameterId = classicParameterIds[number - 1];
+                if (!parameterId) return;
+                const parameter = pdfParameters.find(item => item.id === parameterId);
+                if (!parameter) return;
+
+                const labels = getMeasurementLabels(parameter, 'front');
+                if (parameterId === 11 || parameterId === 15
+                    || !supportsNumericMeasurement(parameter, labels)) return;
+                const hasPercentSuffix = /%\s*$/.test(value);
+                const valueWithoutPercent = hasPercentSuffix ? value.replace(/%\s*$/, '').trim() : value;
+                const numericValue = parseMeasurementValue(valueWithoutPercent);
+                if (numericValue === null) return;
+                let parsedValue = numericValue;
+                if (frontFormula1PercentageRatioIds.has(parameterId)
+                    && (hasPercentSuffix || Math.abs(numericValue) > 1)) {
+                    parsedValue = numericValue / 100;
+                } else if (labels.some(label => typeof label === 'string' && label.includes('%'))
+                    && Math.abs(numericValue) <= 1) {
+                    parsedValue = numericValue * 100;
+                }
+                const tierIndex = findMeasurementTier(parameter, 'front', parsedValue);
+                if (tierIndex === null) return;
+                if (isRequiredMeasurement('front', parameterId)) return;
+                selectedTiers[parameterId] = tierIndex;
+            });
+
+            if (activeFrontFormula === 'classic') render();
+        }
+
+        function applyProfileNotesToFormula(notes) {
+            let hasChanges = false;
+            String(notes).split(/\r?\n/).forEach(row => {
+                const numberMatch = row.match(/^(\d{1,2})\.\s*/);
+                if (!numberMatch) return;
+
+                const parameter = profileParameters[Number(numberMatch[1]) - 1];
+                if (!parameter) return;
+                let separatorIndex = row.search(/[–—]/);
+                if (separatorIndex === -1) {
+                    const hyphenMatch = row.match(/\s+-\s*(.*)$/);
+                    if (hyphenMatch) {
+                        separatorIndex = row.indexOf(hyphenMatch[0]) + hyphenMatch[0].indexOf('-');
+                    }
+                }
+                if (separatorIndex === -1) return;
+                const value = row.slice(separatorIndex + 1).trim();
+                if (!value) return;
+
+                const labels = getMeasurementLabels(parameter, 'profile');
+                const hasNumericMeasurement = supportsNumericMeasurement(parameter, labels);
+                let tierIndex = hasNumericMeasurement
+                    ? findMeasurementTier(parameter, 'profile', value)
+                    : null;
+                if (hasNumericMeasurement) {
+                    measurementInputs.profile[parameter.id] = value.slice(0, 100);
+                }
+
+                if (tierIndex === null) {
+                    const tierMatch = value.match(/^(?:t|tier|тир)\s*([1-7])$/i);
+                    if (tierMatch) {
+                        tierIndex = Number(tierMatch[1]) - 1;
+                    } else {
+                        const normalizedValue = value.trim().toLocaleLowerCase();
+                        tierIndex = labels.findIndex((label, index) =>
+                            parameter.scores[index] !== null
+                            && label.trim().toLocaleLowerCase() === normalizedValue
+                        );
+                    }
+                }
+
+                if (tierIndex !== null && tierIndex >= 0
+                    && parameter.scores[tierIndex] !== null) {
+                    selectedProfileTiers[parameter.id] = tierIndex;
+                }
+                hasChanges = true;
+            });
+
+            if (hasChanges) renderProfile();
         }
 
         function clearNotes(section) {
@@ -5346,6 +6011,10 @@
         const noteHistory = {};
         const noteHistoryLimit = 100;
 
+        function getNoteHistoryKey(section) {
+            return section === 'front' ? `front-${activeFrontFormula}` : section;
+        }
+
         function getNoteSnapshot(target) {
             return {
                 value: target.value,
@@ -5355,7 +6024,7 @@
         }
 
         function updateNoteHistoryButtons(section) {
-            const history = noteHistory[section];
+            const history = noteHistory[getNoteHistoryKey(section)];
             if (!history) return;
             document.getElementById(`${section}NotesUndo`).disabled = history.index <= 0;
             document.getElementById(`${section}NotesRedo`).disabled = history.index >= history.entries.length - 1;
@@ -5363,7 +6032,8 @@
 
         function recordNoteChange(section) {
             const target = document.getElementById(`${section}Notes`);
-            const history = noteHistory[section];
+            const history = noteHistory[getNoteHistoryKey(section)];
+            if (!target || !history) return;
             const snapshot = getNoteSnapshot(target);
             if (snapshot.value === history.entries[history.index].value) return;
 
@@ -5376,7 +6046,7 @@
 
         function applyNoteHistory(section, index) {
             const target = document.getElementById(`${section}Notes`);
-            const history = noteHistory[section];
+            const history = noteHistory[getNoteHistoryKey(section)];
             if (!target || !history || index < 0 || index >= history.entries.length) return;
 
             history.index = index;
@@ -5389,23 +6059,48 @@
         }
 
         function undoNotes(section) {
-            const history = noteHistory[section];
+            const history = noteHistory[getNoteHistoryKey(section)];
             if (history) applyNoteHistory(section, history.index - 1);
         }
 
         function redoNotes(section) {
-            const history = noteHistory[section];
+            const history = noteHistory[getNoteHistoryKey(section)];
             if (history) applyNoteHistory(section, history.index + 1);
         }
 
         function initializeNoteHistory() {
             ['front', 'profile'].forEach(section => {
                 const target = document.getElementById(`${section}Notes`);
-                noteHistory[section] = {
-                    entries: [getNoteSnapshot(target)],
-                    index: 0
-                };
+                const initialSnapshot = getNoteSnapshot(target);
+                if (section === 'front') {
+                    ['classic', 'ideal'].forEach(formula => {
+                        const value = formula === activeFrontFormula
+                            ? initialSnapshot.value
+                            : frontNotesByFormula[formula];
+                        noteHistory[`front-${formula}`] = {
+                            entries: [{
+                                value,
+                                selectionStart: value.length,
+                                selectionEnd: value.length
+                            }],
+                            index: 0
+                        };
+                    });
+                } else {
+                    noteHistory[section] = {
+                        entries: [initialSnapshot],
+                        index: 0
+                    };
+                }
                 target.addEventListener('input', () => recordNoteChange(section));
+                if (section === 'front') {
+                    target.addEventListener('input', () => {
+                        applyFrontNotesToFormula(target.value);
+                        saveAppState();
+                    });
+                } else {
+                    target.addEventListener('input', () => applyProfileNotesToFormula(target.value));
+                }
                 target.addEventListener('keydown', event => {
                     if (!(event.ctrlKey || event.metaKey) || (event.key.toLowerCase() !== 'z' && event.key.toLowerCase() !== 'y')) return;
                     event.preventDefault();
@@ -5420,10 +6115,14 @@
         let appStateSaveErrorShown = false;
 
         function saveAppState() {
+            const frontNotes = document.getElementById('frontNotes').value;
+            frontNotesByFormula[activeFrontFormula] = frontNotes;
             const state = {
                 version: 1,
                 currentGender,
                 currentMainTab,
+                activeFrontFormula,
+                frontFormula2Inputs,
                 selectedTiers,
                 selectedProfileTiers,
                 selectedFeatureTiers,
@@ -5431,7 +6130,8 @@
                 selectedDimorphismTiers,
                 measurementInputs,
                 notes: {
-                    front: document.getElementById('frontNotes').value,
+                    front: frontNotes,
+                    frontByFormula: { ...frontNotesByFormula },
                     profile: document.getElementById('profileNotes').value
                 },
                 overallScoreModes,
@@ -5490,6 +6190,9 @@
                 if (state.currentGender === 'male' || state.currentGender === 'female') {
                     currentGender = state.currentGender;
                 }
+                if (state.activeFrontFormula === 'classic' || state.activeFrontFormula === 'ideal') {
+                    activeFrontFormula = state.activeFrontFormula;
+                }
                 if (['calculator', 'profile', 'features', 'angularity', 'dimorphism', 'overall', 'guide'].includes(state.currentMainTab)) {
                     currentMainTab = state.currentMainTab;
                 }
@@ -5501,12 +6204,37 @@
                 restoreTierSelections(state.selectedDimorphismTiers, selectedDimorphismTiers, dimorphismParameters);
                 restoreMeasurementInputs(state.measurementInputs?.front, 'front', pdfParameters);
                 restoreMeasurementInputs(state.measurementInputs?.profile, 'profile', profileParameters);
+                if (state.frontFormula2Inputs && typeof state.frontFormula2Inputs === 'object'
+                    && !Array.isArray(state.frontFormula2Inputs)) {
+                    const validFormula2Ids = new Set(frontFormula2Parameters.map(parameter => String(parameter.id)));
+                    Object.entries(state.frontFormula2Inputs).forEach(([id, value]) => {
+                        if (validFormula2Ids.has(id) && (typeof value === 'string' || typeof value === 'number')) {
+                            const text = String(value);
+                            if (text.length <= 100) frontFormula2Inputs[id] = text;
+                        }
+                    });
+                }
 
-                ['front', 'profile'].forEach(section => {
-                    if (typeof state.notes?.[section] === 'string') {
-                        document.getElementById(`${section}Notes`).value = state.notes[section];
-                    }
-                });
+                const savedFrontNotesByFormula = state.notes?.frontByFormula;
+                const hasSavedFrontNotesByFormula = savedFrontNotesByFormula
+                    && typeof savedFrontNotesByFormula === 'object'
+                    && !Array.isArray(savedFrontNotesByFormula);
+                if (hasSavedFrontNotesByFormula) {
+                    ['classic', 'ideal'].forEach(formula => {
+                        if (typeof savedFrontNotesByFormula[formula] === 'string') {
+                            frontNotesByFormula[formula] = savedFrontNotesByFormula[formula];
+                        }
+                    });
+                }
+                if (typeof state.notes?.front === 'string'
+                    && (!hasSavedFrontNotesByFormula
+                        || typeof savedFrontNotesByFormula[activeFrontFormula] !== 'string')) {
+                    frontNotesByFormula[activeFrontFormula] = state.notes.front;
+                }
+                document.getElementById('frontNotes').value = frontNotesByFormula[activeFrontFormula];
+                if (typeof state.notes?.profile === 'string') {
+                    document.getElementById('profileNotes').value = state.notes.profile;
+                }
 
                 Object.keys(overallScoreModes).forEach(category => {
                     if (state.overallScoreModes?.[category] === 'manual' || state.overallScoreModes?.[category] === 'auto') {
